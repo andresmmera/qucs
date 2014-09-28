@@ -150,7 +150,9 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     checkTextAntiAliasing->setChecked(QucsSettings.TextAntiAliasing);
 
     t->addTab(appSettingsTab, tr("Settings"));
-
+    ShortcutButton = new QPushButton(appSettingsTab);
+    //connect(ShortcutButton, SIGNAL(clicked()), SLOT());
+    appSettingsGrid->addWidget(ShortcutButton,10,1);
     // ...........................................................
     // The source code editor settings tab
     QWidget *editorTab = new QWidget(t);
@@ -413,6 +415,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     p = BGColorButton->palette();
     p.setColor(BGColorButton->backgroundRole(), QucsSettings.BGColor);
     BGColorButton->setPalette(p);
+    ShortcutButton->setText("Custom Shortcut");
 
     undoNumEdit->setText(QString::number(QucsSettings.maxUndo));
     editorEdit->setText(QucsSettings.Editor);
