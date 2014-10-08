@@ -151,7 +151,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
 
     t->addTab(appSettingsTab, tr("Settings"));
     ShortcutButton = new QPushButton(appSettingsTab);
-    //connect(ShortcutButton, SIGNAL(clicked()), SLOT());
+    connect(ShortcutButton, SIGNAL(clicked()), SLOT(slotShortcutDialog()));
     appSettingsGrid->addWidget(ShortcutButton,10,1);
     // ...........................................................
     // The source code editor settings tab
@@ -692,6 +692,13 @@ void QucsSettingsDialog::slotBGColorDialog()
         p.setColor(BGColorButton->backgroundRole(), c);
         BGColorButton->setPalette(p);
     }
+}
+
+// -----------------------------------------------------------
+void QucsSettingsDialog::slotShortcutDialog()
+{
+  QucsShortcutDialog *d = new QucsShortcutDialog(App);
+  d->exec();
 }
 
 // -----------------------------------------------------------

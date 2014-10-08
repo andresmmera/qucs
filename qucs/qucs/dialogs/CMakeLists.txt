@@ -59,6 +59,7 @@ simmessage.h
 sweepdialog.h
 sweepdialog.h
 vasettingsdialog.h
+qucsshortcutdialog.h
 keysequenceedit.h
 )
 
