@@ -431,6 +431,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     ascoEdit->setText(QucsSettings.AscoBinDir.canonicalPath());
     octaveEdit->setText(QucsSettings.OctaveBinDir.canonicalPath());
 
+    shortcutDialog = NULL;
 
     resize(300, 200);
 }
@@ -697,8 +698,10 @@ void QucsSettingsDialog::slotBGColorDialog()
 // -----------------------------------------------------------
 void QucsSettingsDialog::slotShortcutDialog()
 {
-  QucsShortcutDialog *d = new QucsShortcutDialog(App);
-  d->exec();
+  if (!shortcutDialog) {
+    shortcutDialog = new QucsShortcutDialog(App);
+  }
+  shortcutDialog->exec();
 }
 
 // -----------------------------------------------------------
