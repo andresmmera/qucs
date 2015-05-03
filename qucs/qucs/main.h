@@ -80,6 +80,11 @@ struct tQucsSettings {
   bool GraphAntiAliasing;
   bool TextAntiAliasing;
 
+  QColor wireColor;
+  int wireThickness;
+  QColor selectedWireColor;
+  int selectedWireThickness;
+
   //shortcut
   QVector<QPair<QString, QMap<QString, QString>* > > Shortcut;
 };
