@@ -225,6 +225,7 @@ void Module::registerModules (void) {
   // lumped components
   REGISTER_LUMPED_2 (Resistor, info, info_us);
   REGISTER_LUMPED_1 (Capacitor);
+  REGISTER_LUMPED_1 (capq);
   REGISTER_LUMPED_1 (Inductor);
   REGISTER_LUMPED_1 (Ground);
   REGISTER_LUMPED_1 (SubCirPort);
@@ -283,7 +284,6 @@ void Module::registerModules (void) {
 
   // transmission lines
   REGISTER_TRANS_1 (TLine);
-  REGISTER_TRANS_1 (taperedline);
   REGISTER_TRANS_1 (TLine_4Port);
   REGISTER_TRANS_1 (CoupledTLine);
   REGISTER_TRANS_1 (TwistedPair);

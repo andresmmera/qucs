@@ -39,6 +39,7 @@
 
 #include "resistor.h"
 #include "capacitor.h"
+#include "capq.h"
 #include "inductor.h"
 #include "mutual.h"
 #include "mutual2.h"
@@ -73,7 +74,6 @@
 #include "tline.h"
 #include "ctline.h"
 #include "coaxline.h"
-#include "taperedline.h"
 #include "rectline.h"
 #include "twistedpair.h"
 #include "tline4p.h"

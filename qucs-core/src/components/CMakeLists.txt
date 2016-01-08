@@ -8,6 +8,7 @@ SET( COMPONENTS_SRC
   attenuator.cpp
   biastee.cpp
   capacitor.cpp
+  capq.cpp
   cccs.cpp
   ccvs.cpp
   circulator.cpp
@@ -18,7 +19,6 @@ SET( COMPONENTS_SRC
   dcblock.cpp
   dcfeed.cpp
   ecvs.cpp
-  taperedline.cpp
   ground.cpp
   gyrator.cpp
   hybrid.cpp

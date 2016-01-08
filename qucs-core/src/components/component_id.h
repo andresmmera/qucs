@@ -42,6 +42,7 @@ enum circuit_type {
   // linear components
   CIR_RESISTOR,
   CIR_CAPACITOR,
+  CIR_CAPQ,
   CIR_INDUCTOR,
   CIR_MUTUAL,
   CIR_MUTUAL2,
@@ -75,7 +76,6 @@ enum circuit_type {
   CIR_RELAIS,
   CIR_TLINE,
   CIR_CTLINE,
-  CIR_TAPEREDLINE,
   CIR_COAXLINE,
   CIR_RECTANGULAR,
   CIR_TWISTEDPAIR,

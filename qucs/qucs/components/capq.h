@@ -20,16 +20,16 @@
 *
 *
 */
-#ifndef TAPEREDLINE_H
-#define TAPEREDLINE_H
+#ifndef CAPQ_H
+#define CAPQ_H
 
 #include "component.h"
 
 
-class taperedline : public Component  {
+class capq : public Component  {
 public:
-  taperedline();
- ~taperedline();
+  capq();
+ ~capq();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
 };

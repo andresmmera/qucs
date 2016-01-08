@@ -1,5 +1,5 @@
 /*
- * taperedline.h - ideal tapered transmission line class definition
+ * capq.h - ideal tapered transmission line class definition
  *
  * Copyright (C) 2015 Claudio Girardi <in3otd@qsl.net>
  * Copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
@@ -23,34 +23,26 @@
  *
  */
 
-#ifndef TAPEREDLINE_H
-#define TAPEREDLINE_H
+#ifndef CAPQ_H
+#define CAPQ_H
 #include "matrix.h"
 
-const int Nsteps = 20; // Number of sections used to approximate the taper
+const int Nstepss = 20; // Number of sections used to approximate the taper
 
-class taperedline : public qucs::circuit
+class capq : public qucs::circuit
 {
  public:
-  CREATOR (taperedline);
+  CREATOR (capq);
   void calcSP (nr_double_t);
   void initDC (void);
   void initAC (void);
   void initSP (void);
   void calcAC (nr_double_t);
-  void calcNoiseAC (nr_double_t);
-  void calcNoiseSP (nr_double_t);
 private:
   void calcABCDparams(nr_double_t);
-  void calcImpedanceProfile();
-  nr_double_t calcExponential(nr_double_t, nr_double_t, nr_double_t, nr_double_t);
-  nr_double_t calcLinear(nr_double_t, nr_double_t, nr_double_t, nr_double_t);
-  nr_double_t calcTriangular(nr_double_t, nr_double_t, nr_double_t, nr_double_t);
-  nr_double_t calcKlopfenstein(nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t);
-  nr_double_t phi(nr_double_t, nr_double_t);
   qucs::matrix ABCD;
-  double Zprofile[Nsteps];
+  double Zprofile[Nstepss];
 };
 
-#endif /* __taperedline_H__ */
+#endif /* __capq_H__ */
 

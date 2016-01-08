@@ -164,6 +164,7 @@ void module::registerModules (void) {
   // circuit components
   REGISTER_CIRCUIT (resistor);
   REGISTER_CIRCUIT (capacitor);
+  REGISTER_CIRCUIT (capq);
   REGISTER_CIRCUIT (pac);
   REGISTER_CIRCUIT (inductor);
   REGISTER_CIRCUIT (vccs);
@@ -200,7 +201,6 @@ void module::registerModules (void) {
   REGISTER_CIRCUIT (tline4p);
   REGISTER_CIRCUIT (ctline);
   REGISTER_CIRCUIT (coaxline);
-  REGISTER_CIRCUIT (taperedline);
   REGISTER_CIRCUIT (rectline);
   REGISTER_CIRCUIT (twistedpair);
   REGISTER_CIRCUIT (rlcg);
