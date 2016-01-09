@@ -1,5 +1,5 @@
 /*
-* capq.h - Lossy capacitor definition
+* indq.h - Lossy capacitor definition
 *
 * copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
 *
@@ -20,16 +20,16 @@
 *
 *
 */
-#ifndef CAPQ_H
-#define CAPQ_H
+#ifndef INDQ_H
+#define INDQ_H
 
 #include "component.h"
 
 
-class capq : public Component  {
+class indq : public Component  {
 public:
-  capq();
- ~capq();
+  indq();
+ ~indq();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
 };

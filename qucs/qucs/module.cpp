@@ -227,6 +227,7 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (Capacitor);
   REGISTER_LUMPED_1 (capq);
   REGISTER_LUMPED_1 (Inductor);
+  REGISTER_LUMPED_1 (indq);
   REGISTER_LUMPED_1 (Ground);
   REGISTER_LUMPED_1 (SubCirPort);
   REGISTER_LUMPED_1 (Transformer);

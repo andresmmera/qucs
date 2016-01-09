@@ -53,7 +53,7 @@ d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
 dc_sim.cpp		logic_0.cpp		photodiode.cpp		vrect.cpp
 dcblock.cpp		logic_1.cpp		phototransistor.cpp
 dcfeed.cpp		logical_and.cpp		pm_modulator.cpp
-bsim4v30nMOS.cpp        capq.cpp
+bsim4v30nMOS.cpp        capq.cpp                indq.cpp
 bsim4v30pMOS.cpp
 vcresistor.cpp
 vacomponent.cpp
@@ -141,6 +141,7 @@ hybrid.h
 iexp.h
 ifile.h
 inductor.h
+indq.cpp
 iprobe.h
 ipulse.h
 irect.h

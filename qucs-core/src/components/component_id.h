@@ -44,6 +44,7 @@ enum circuit_type {
   CIR_CAPACITOR,
   CIR_CAPQ,
   CIR_INDUCTOR,
+  CIR_INDQ,
   CIR_MUTUAL,
   CIR_MUTUAL2,
   CIR_MUTUALX,

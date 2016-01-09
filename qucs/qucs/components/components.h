@@ -27,6 +27,7 @@
 #include "capacitor.h"
 #include "capq.h"
 #include "inductor.h"
+#include "indq.h"
 #include "dcblock.h"
 #include "dcfeed.h"
 #include "biast.h"

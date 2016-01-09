@@ -28,6 +28,7 @@ SET( COMPONENTS_SRC
   ifile.cpp
   iinoise.cpp
   inductor.cpp
+  indq.cpp
   inoise.cpp
   iprobe.cpp
   ipulse.cpp

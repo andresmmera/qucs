@@ -1,5 +1,5 @@
 /*
- * capq.h - Lossy inductor class definition
+ * indq.h - Lossy inductor class definition
  *
  * Copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
@@ -22,15 +22,15 @@
  *
  */
 
-#ifndef CAPQ_H
-#define CAPQ_H
+#ifndef INDQ_H
+#define INDQ_H
 #include "matrix.h"
 
 
-class capq : public qucs::circuit
+class indq : public qucs::circuit
 {
  public:
-  CREATOR (capq);
+  CREATOR (indq);
   void calcSP (nr_double_t);
   void initDC (void);
   void initAC (void);
@@ -41,5 +41,5 @@ private:
   qucs::matrix ABCD;
 };
 
-#endif /* __capq_H__ */
+#endif /* __indq_H__ */
 

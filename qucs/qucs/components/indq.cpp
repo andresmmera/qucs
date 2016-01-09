@@ -1,5 +1,5 @@
 /*
-* capq.cpp - Lossy capacitor implementation
+* indq.cpp - Lossy capacitor implementation
 *
 * copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
 *
@@ -20,23 +20,23 @@
 *
 *
 */
-#include "capq.h"
+#include "indq.h"
 
 
-capq::capq()
+indq::indq()
 {
-  Description = QObject::tr("Lossy capacitor");
+  Description = QObject::tr("Lossy inductor");
 
-  //Lines connection device and ports
-  Lines.append(new Line( -4,-11, -4, 11,QPen(Qt::darkBlue,4)));
-  Lines.append(new Line(  4,-11,  4, 11,QPen(Qt::darkBlue,4)));
+  //Spiral
+  Arcs.append(new Arc(-18, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc( -6, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc(  6, -6, 12, 12,  0, 16*180,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  0,-18,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line( 18,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
 
-  Lines.append(new Line(-30,  0, -4,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  4,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
-
-  //Draw Q
+  //Draw Q character
   //Horizontal lines
   Lines.append(new Line( 10,  -10, 17,  -10,QPen(Qt::darkBlue,2)));
   Lines.append(new Line( 10,  -17, 17,  -17,QPen(Qt::darkBlue,2)));
@@ -56,30 +56,30 @@ capq::capq()
 
   tx = x1+4;
   ty = y2+4;
-  Model = "CAPQ";
-  Name  = "CAPQ";
+  Model = "INDQ";
+  Name  = "INDQ";
 
-  Props.append(new Property("C", "1 pF", true,
-		QObject::tr("Capacitance")));
+  Props.append(new Property("L", "1 nH", true,
+		QObject::tr("Inductance")));
   Props.append(new Property("Q", "100", true,
 		QObject::tr("Quality factor")));
   Props.append(new Property("f", "100 MHz", true,
 		QObject::tr("Frequency at which Q is measured")));
 }
-capq::~capq()
+indq::~indq()
 {
 }
 
-Component* capq::newOne()
+Component* indq::newOne()
 {
-  return new capq();
+  return new indq();
 }
 
-Element* capq::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* indq::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Q Capacitor");
-  BitmapFile = (char *) "capq";
+  Name = QObject::tr("Q inductor");
+  BitmapFile = (char *) "indq";
 
-  if(getNewOne)  return new capq();
+  if(getNewOne)  return new indq();
   return 0;
 }

@@ -1,5 +1,5 @@
 /*
- * capq.cpp - Lossy capacitor class implementation
+ * indq.cpp - Lossy inductor class implementation
  *
  * Copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
@@ -28,31 +28,32 @@
 #endif
 
 #include "component.h"
-#include "capq.h"
+#include "indq.h"
 #include "iostream"
 using namespace qucs;
 
-capq::capq () : circuit (2) {
-  type = CIR_CAPQ;
+indq::indq () : circuit (2) {
+  type = CIR_INDQ;
 }
 //------------------------------------------------------------------
-// This function calculates the ABCD matrix of a lossy capacitor
-// Q = 1 / (2*pi*f*Rs*C)
-// where Rs is the series resistance and C the capacitance
-void capq::calcABCDparams(nr_double_t frequency)
+// This function calculates the ABCD matrix of a lossy inductance
+// Q = 2*pi*f*L/Rs
+// where Rs is the series resistance and L the inductance
+void indq::calcABCDparams(nr_double_t frequency)
 {
- nr_double_t C = getPropertyDouble ("C");
+ nr_double_t L = getPropertyDouble ("L");
  nr_double_t Q = getPropertyDouble ("Q");
  nr_double_t f = getPropertyDouble ("f");
- nr_double_t Rs = 1/(2*pi*f*C*Q);
+ nr_double_t Rs = (2*pi*f*L)/Q;
+
  ABCD = eye(2);
  ABCD.set(0,0,1);
- ABCD.set(0,1, Rs - nr_complex_t (0, 1)/(2.*pi*C*frequency));
+ ABCD.set(0,1, Rs + 2*pi*L*frequency*nr_complex_t (0, 1));
  ABCD.set(1,0,0);
  ABCD.set(1,1,1);
 }
 
-void capq::calcSP (nr_double_t frequency) {
+void indq::calcSP (nr_double_t frequency) {
   calcABCDparams(frequency);
   matrix Stmp = qucs::atos(ABCD, z0, z0);
   setMatrixS(Stmp);
@@ -60,24 +61,24 @@ void capq::calcSP (nr_double_t frequency) {
 
 
 
-void capq::initDC (void) {
+void indq::initDC (void) {
   allocMatrixMNA ();
   // open circuit
   clearY ();
 }
 
-void capq::initAC (void) {
+void indq::initAC (void) {
   setVoltageSources (0);
   allocMatrixMNA ();
 }
 
 
-void capq::initSP(void)
+void indq::initSP(void)
 {
   allocMatrixS ();
 }
 
-void capq::calcAC (nr_double_t frequency) {
+void indq::calcAC (nr_double_t frequency) {
   calcABCDparams(frequency);
   nr_complex_t y11 = ABCD.get(1,1)/ABCD.get(0,1);
   nr_complex_t y12 = -det(ABCD)/ABCD.get(0,1);
@@ -90,10 +91,10 @@ void capq::calcAC (nr_double_t frequency) {
 
 // properties
 PROP_REQ [] = {
-  { "C", PROP_REAL, { 1e-12, PROP_NO_STR }, PROP_POS_RANGE },
+  { "L", PROP_REAL, { 1e-12, PROP_NO_STR }, PROP_POS_RANGE },
   { "Q", PROP_REAL, { 100, PROP_NO_STR }, PROP_POS_RANGE },
   { "f", PROP_REAL, { 100e6, PROP_NO_STR }, PROP_NO_RANGE },
     PROP_NO_PROP };
 PROP_OPT [] = {  PROP_NO_PROP };
-struct define_t capq::cirdef =
-  { "CAPQ", 2, PROP_COMPONENT, PROP_NO_SUBSTRATE, PROP_LINEAR, PROP_DEF };
+struct define_t indq::cirdef =
+  { "INDQ", 2, PROP_COMPONENT, PROP_NO_SUBSTRATE, PROP_LINEAR, PROP_DEF };
