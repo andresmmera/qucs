@@ -62,9 +62,10 @@ void indq::calcSP (nr_double_t frequency) {
 
 
 void indq::initDC (void) {
+  //Short circuit
+  setVoltageSources (1);
   allocMatrixMNA ();
-  // open circuit
-  clearY ();
+  voltageSource (VSRC_1, NODE_1, NODE_2);
 }
 
 void indq::initAC (void) {

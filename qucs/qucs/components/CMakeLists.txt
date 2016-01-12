@@ -51,7 +51,7 @@ cpwstep.cpp		jkff_SR.cpp		pad4bit.cpp		volt_noise.cpp
 ctline.cpp		libcomp.cpp		param_sweep.cpp		vprobe.cpp
 d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
 dc_sim.cpp		logic_0.cpp		photodiode.cpp		vrect.cpp
-dcblock.cpp		logic_1.cpp		phototransistor.cpp
+dcblock.cpp		logic_1.cpp		phototransistor.cpp     spiralinductor.cpp
 dcfeed.cpp		logical_and.cpp		pm_modulator.cpp
 bsim4v30nMOS.cpp        capq.cpp                indq.cpp
 bsim4v30pMOS.cpp
@@ -207,6 +207,7 @@ rlcg.h
 rs_flipflop.h
 source_ac.h
 sp_sim.h
+spiralinductor.h
 sparamfile.h
 spicedialog.h
 spicefile.h
