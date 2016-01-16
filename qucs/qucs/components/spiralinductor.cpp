@@ -55,8 +55,6 @@ spiralinductor::spiralinductor()
 		QObject::tr("Width of line")));
   Props.append(new Property("Di", "200 um", true,
 		QObject::tr("Inner diameter")));
-  Props.append(new Property("Do", "450 um", true,
-		QObject::tr("Outer diameter")));
   Props.append(new Property("S", "25 um", true,
 		QObject::tr("Spacing between turns")));
   Props.append(new Property("N", "3", true,

@@ -29,6 +29,7 @@
 #include "inductor.h"
 #include "indq.h"
 #include "spiralinductor.h"
+#include "circularloop.h"
 #include "dcblock.h"
 #include "dcfeed.h"
 #include "biast.h"

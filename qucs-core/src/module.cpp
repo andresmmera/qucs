@@ -168,6 +168,7 @@ void module::registerModules (void) {
   REGISTER_CIRCUIT (pac);
   REGISTER_CIRCUIT (inductor);
   REGISTER_CIRCUIT (spiralinductor);
+  REGISTER_CIRCUIT (circularloop);
   REGISTER_CIRCUIT (indq);
   REGISTER_CIRCUIT (vccs);
   REGISTER_CIRCUIT (cccs);

@@ -305,6 +305,7 @@ void Module::registerModules (void) {
   REGISTER_TRANS_1 (MSvia);
   REGISTER_TRANS_1 (MSrstub);
   REGISTER_TRANS_1 (spiralinductor);
+  REGISTER_TRANS_1 (circularloop);
   REGISTER_TRANS_1 (Coplanar);
   REGISTER_TRANS_1 (CPWopen);
   REGISTER_TRANS_1 (CPWshort);

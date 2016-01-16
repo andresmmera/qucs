@@ -38,7 +38,7 @@ libcomponent_la_SOURCES = attenuator.cpp dcblock.cpp open.cpp vccs.cpp        \
 	vvnoise.cpp ivnoise.cpp coupler.cpp coaxline.cpp vprobe.cpp vam.cpp  \
 	vpm.cpp tswitch.cpp relais.cpp short.cpp twistedpair.cpp tline4p.cpp \
 	vexp.cpp iexp.cpp mutualx.cpp vfile.cpp ifile.cpp rfedd.cpp          \
-	rectline.cpp rlcg.cpp hybrid.cpp ctline.cpp ecvs.cpp capq.cpp indq.cpp
+	rectline.cpp rlcg.cpp hybrid.cpp ctline.cpp ecvs.cpp capq.cpp indq.cpp 
 
 pkginclude_HEADERS = component.h components.h component_id.h
 

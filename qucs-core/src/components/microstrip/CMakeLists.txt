@@ -26,6 +26,7 @@ SET( MICROSTRIP_SRC
   msvia.cpp
   substrate.cpp
   spiralinductor.cpp
+  circularloop.cpp
 )
 
 ADD_LIBRARY( coreMicrostrip OBJECT ${MICROSTRIP_SRC} )
