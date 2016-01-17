@@ -29,21 +29,10 @@ circularloop::circularloop()
   Description = QObject::tr("Printed loop inductor");
 
   //Loop
-  Arcs.append(new Arc(-20, -29, 40, 40, -325, 16*220,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-15, -22, 30, 30, -300, 16*220,QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc(-18, -25, 35, 35, -312, 16*220,QPen(Qt::gray,4)));
 
-
-  Lines.append(new Line(-30,  -2, -19,  -2,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  19,  -2, 30,  -2,QPen(Qt::darkBlue,2)));
-
-  Lines.append(new Line(-14,  -2, -14,  2,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  14,  -2, 14,  2,QPen(Qt::darkBlue,2)));
-
-  Lines.append(new Line(-30,  -2, -30,  2,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  30,  -2, 30,  2,QPen(Qt::darkBlue,2)));
-
-  Lines.append(new Line(-30,  2, -14,  2,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line(  14,  2, 30,  2,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(-30,  0, -16,  0,QPen(Qt::gray,8)));
+  Lines.append(new Line(  16,  0, 30,  0,QPen(Qt::gray,8)));
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));

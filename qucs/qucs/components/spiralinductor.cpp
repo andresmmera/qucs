@@ -29,13 +29,16 @@ spiralinductor::spiralinductor()
   Description = QObject::tr("Planar spiral inductor");
 
   //Spiral
-  Arcs.append(new Arc(-5, 0, 10, 10, -16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-10, -10, 20, 20, 16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-15, -10, 30, 30, -16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-20, -20, 40, 40, 16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-20, -20, 40, 40, 0, 16*90,QPen(Qt::darkBlue,2)));
+  Arcs.append(new Arc(-5, 0, 10, 10, -16*90, 16*180,QPen(Qt::gray,4)));
+  Arcs.append(new Arc(-10, -10, 20, 20, 16*90, 16*180,QPen(Qt::gray,4)));
+  Arcs.append(new Arc(-15, -10, 30, 30, -16*90, 16*180,QPen(Qt::gray,4)));
+  Arcs.append(new Arc(-20, -20, 40, 40, 16*90, 16*180,QPen(Qt::gray,4)));
+  Arcs.append(new Arc(-20, -20, 40, 40, 0, 16*90,QPen(Qt::gray,4)));
 
-  Lines.append(new Line(-30,  0, 0,  0,QPen(Qt::darkBlue,2)));
+
+
+
+  Lines.append(new Line(-30,  0, 0,  0,QPen(Qt::black,4)));
   Lines.append(new Line( 20,  0, 30,  0,QPen(Qt::darkBlue,2)));
 
   Ports.append(new Port(-30, 0));
