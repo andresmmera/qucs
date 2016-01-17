@@ -212,6 +212,7 @@ spiralinductor.h
 sparamfile.h
 spicedialog.h
 spicefile.h
+squareinductor.h
 subcircuit.h
 subcirport.h
 substrate.h

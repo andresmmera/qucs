@@ -48,8 +48,8 @@ circularloop::circularloop()
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));
 
-  x1 = -30; y1 =-11;
-  x2 =  11; y2 = 30;
+  x1 = -30; y1 =-30;
+  x2 =  30; y2 = 5;
 
   tx = x2;
   ty = y1+20;

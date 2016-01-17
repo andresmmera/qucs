@@ -1,5 +1,5 @@
 /*
-* spiralinductor.cpp - Planar spiral inductor class implementation
+* squareinductor.cpp - Planar square inductor class implementation
 *
 * copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
 *
@@ -21,33 +21,38 @@
 *
 */
 
-#include "spiralinductor.h"
+#include "squareinductor.h"
 
 
-spiralinductor::spiralinductor()
+squareinductor::squareinductor()
 {
-  Description = QObject::tr("Planar spiral inductor");
+  Description = QObject::tr("Planar square inductor");
 
-  //Spiral
-  Arcs.append(new Arc(-5, 0, 10, 10, -16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-10, -10, 20, 20, 16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-15, -10, 30, 30, -16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-20, -20, 40, 40, 16*90, 16*180,QPen(Qt::darkBlue,2)));
-  Arcs.append(new Arc(-20, -20, 40, 40, 0, 16*90,QPen(Qt::darkBlue,2)));
+  //Square spiral
+  Lines.append(new Line(-30,  0, 2,  0,QPen(Qt::black,4)));
+  Lines.append(new Line(2,  0, 2,  10,QPen(Qt::gray,4)));
+  Lines.append(new Line(-10,  10, 2,  10,QPen(Qt::gray,4)));
+  Lines.append(new Line(-10,  10, -10,  -10,QPen(Qt::gray,4)));
+  Lines.append(new Line(-10,  -10, 10,  -10,QPen(Qt::gray,4)));
+  Lines.append(new Line(10,  -10, 10,  20,QPen(Qt::gray,4)));
+  Lines.append(new Line(-20,  20, 10,  20,QPen(Qt::gray,4)));
+  Lines.append(new Line(-20,  20, -20,  -25,QPen(Qt::gray,4)));
+  Lines.append(new Line(-20,  -25, 20,  -25,QPen(Qt::gray,4)));
+  Lines.append(new Line(20,  0, 20,  -25,QPen(Qt::gray,4)));
 
-  Lines.append(new Line(-30,  0, 0,  0,QPen(Qt::darkBlue,2)));
-  Lines.append(new Line( 20,  0, 30,  0,QPen(Qt::darkBlue,2)));
+  Lines.append(new Line(  20,  0, 30,  0,QPen(Qt::darkBlue,4)));
+
 
   Ports.append(new Port(-30, 0));
   Ports.append(new Port( 30, 0));
 
-  x1 = -30; y1 =-20;
-  x2 =  30; y2 = 20;
+  x1 = -30; y1 =-30;
+  x2 =  30; y2 = 30;
 
   tx = x2;
   ty = y1+20;
-  Model = "SPIRALIND";
-  Name  = "SPIRALIND";
+  Model = "SQUAREIND";
+  Name  = "SQUAREIND";
 
   Props.append(new Property("Subst", "Subst1", true,
 		QObject::tr("Substrate")));
@@ -62,20 +67,20 @@ spiralinductor::spiralinductor()
 
 }
 
-spiralinductor::~spiralinductor()
+squareinductor::~squareinductor()
 {
 }
 
-Component* spiralinductor::newOne()
+Component* squareinductor::newOne()
 {
-  return new spiralinductor();
+  return new squareinductor();
 }
 
-Element* spiralinductor::info(QString& Name, char* &BitmapFile, bool getNewOne)
+Element* squareinductor::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Spiral inductor");
-  BitmapFile = (char *) "spiralinductor";
+  Name = QObject::tr("Square inductor");
+  BitmapFile = (char *) "squareinductor";
 
-  if(getNewOne)  return new spiralinductor();
+  if(getNewOne)  return new squareinductor();
   return 0;
 }

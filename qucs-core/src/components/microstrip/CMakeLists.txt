@@ -7,6 +7,7 @@ INCLUDE_DIRECTORIES( ${qucs-core_SOURCE_DIR}
 
 SET( MICROSTRIP_SRC
   bondwire.cpp
+  circularloop.cpp
   cpwgap.cpp
   cpwline.cpp
   cpwopen.cpp
@@ -26,7 +27,7 @@ SET( MICROSTRIP_SRC
   msvia.cpp
   substrate.cpp
   spiralinductor.cpp
-  circularloop.cpp
+  squareinductor.cpp
 )
 
 ADD_LIBRARY( coreMicrostrip OBJECT ${MICROSTRIP_SRC} )

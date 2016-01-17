@@ -124,6 +124,7 @@
 #include "microstrip/msrstub.h"
 #include "microstrip/bondwire.h"
 #include "microstrip/spiralinductor.h"
+#include "microstrip/squareinductor.h"
 #include "microstrip/circularloop.h"
 
 #include "microstrip/cpwline.h"
