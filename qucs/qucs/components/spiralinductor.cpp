@@ -47,8 +47,8 @@ spiralinductor::spiralinductor()
   x1 = -30; y1 =-20;
   x2 =  30; y2 = 20;
 
-  tx = x2;
-  ty = y1+20;
+  tx = x1;
+  ty = y1+50;
   Model = "SPIRALIND";
   Name  = "SPIRALIND";
 

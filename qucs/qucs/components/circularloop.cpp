@@ -40,8 +40,8 @@ circularloop::circularloop()
   x1 = -30; y1 =-30;
   x2 =  30; y2 = 5;
 
-  tx = x2;
-  ty = y1+20;
+  tx = x1;
+  ty = y1+40;
   Model = "CIRCULARLOOP";
   Name  = "CIRCULARLOOP";
 

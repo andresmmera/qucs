@@ -118,6 +118,8 @@ enum circuit_type {
   CIR_SPIRALIND,
   CIR_SQUAREIND,
   CIR_CIRCULARLOOP,
+  CIR_HEXAGONALIND,
+  CIR_OCTOGONALIND,
 
   // coplanar components
   CIR_CPWLINE,

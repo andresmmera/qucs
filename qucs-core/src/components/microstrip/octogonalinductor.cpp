@@ -1,5 +1,5 @@
 /*
- * squareinductor.cpp - Spiral inductor class implementation
+ * octogonalinductor.cpp - Octogonal printed inductor class implementation
  *
  * Copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
@@ -28,7 +28,7 @@
 #endif
 
 #include "component.h"
-#include "squareinductor.h"
+#include "octogonalinductor.h"
 #include "substrate.h"
 using namespace qucs;
 
@@ -40,12 +40,12 @@ using namespace qucs;
 //     Vol 34, No 10, October 1999  
 // [3] I. Bahl, Lumped Elements for RF and Microwave Circuits, Artech House, Norwood, MA, 2003.
 //------------------------------------------------------------------------
-squareinductor::squareinductor () : circuit (2) {
-  type = CIR_SQUAREIND;
+octogonalinductor::octogonalinductor () : circuit (2) {
+  type = CIR_OCTOGONALIND;
 }
 //------------------------------------------------------------------
-// This function calculates the ABCD matrix of the spiral inductance
-void squareinductor::calcABCDparams(nr_double_t frequency)
+// This function calculates the ABCD matrix of the octogonal printed inductance
+void octogonalinductor::calcABCDparams(nr_double_t frequency)
 {
  nr_double_t N = getPropertyDouble ("N");//Number of turns
  nr_double_t Di = getPropertyDouble ("Di");//Inner diameter
@@ -55,13 +55,13 @@ void squareinductor::calcABCDparams(nr_double_t frequency)
 
  nr_double_t Do = Di + 2.*N*W + (2.*N-1)*S;
  nr_double_t a = (Di+Do)/4.;
- 
+
  nr_double_t rho = subst->getPropertyDouble ("rho");
  nr_double_t t = subst->getPropertyDouble ("t");
  
  nr_double_t chi = (Do - Di) / (Do + Di);//Fill ratio
  nr_double_t Dav = .5*(Do+Di);
- nr_double_t c1 = 1.27, c2=2.07, c3=.18, c4=.13;//Coeffients of the square inductance for the general inductance expression
+ nr_double_t c1 = 1.07, c2=2.29, c3=0, c4=.19;//Coeffients of the square inductance for the general inductance expression
                                                 // given at [1], page 139.
    
  nr_double_t K = 1.+0.333*std::pow(1.+S/W, -1.7); 
@@ -80,7 +80,7 @@ void squareinductor::calcABCDparams(nr_double_t frequency)
  ABCD.set(1,1, -4.*pi*pi*C*L*frequency*frequency + 2.*I*pi*C*R*frequency + 1.);
 }
 
-void squareinductor::calcSP (nr_double_t frequency) {
+void octogonalinductor::calcSP (nr_double_t frequency) {
   calcABCDparams(frequency);
   matrix Stmp = qucs::atos(ABCD, z0, z0);
   setMatrixS(Stmp);
@@ -88,25 +88,25 @@ void squareinductor::calcSP (nr_double_t frequency) {
 
 
 
-void squareinductor::initDC (void) {
+void octogonalinductor::initDC (void) {
   //Short circuit
   setVoltageSources (1);
   allocMatrixMNA ();
   voltageSource (VSRC_1, NODE_1, NODE_2);
 }
 
-void squareinductor::initAC (void) {
+void octogonalinductor::initAC (void) {
   setVoltageSources (0);
   allocMatrixMNA ();
 }
 
 
-void squareinductor::initSP(void)
+void octogonalinductor::initSP(void)
 {
   allocMatrixS ();
 }
 
-void squareinductor::calcAC (nr_double_t frequency) {
+void octogonalinductor::calcAC (nr_double_t frequency) {
   calcABCDparams(frequency);
   nr_complex_t y11 = ABCD.get(1,1)/ABCD.get(0,1);
   nr_complex_t y12 = -det(ABCD)/ABCD.get(0,1);
@@ -126,5 +126,5 @@ PROP_REQ [] = {
   { "N", PROP_REAL, { 3, PROP_NO_STR }, PROP_NO_RANGE },
     PROP_NO_PROP };
 PROP_OPT [] = {  PROP_NO_PROP };
-struct define_t squareinductor::cirdef =
-  { "SQUAREIND", 2, PROP_COMPONENT, PROP_NO_SUBSTRATE, PROP_LINEAR, PROP_DEF };
+struct define_t octogonalinductor::cirdef =
+  { "OCTOGONALIND", 2, PROP_COMPONENT, PROP_NO_SUBSTRATE, PROP_LINEAR, PROP_DEF };

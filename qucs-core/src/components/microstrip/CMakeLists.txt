@@ -13,6 +13,7 @@ SET( MICROSTRIP_SRC
   cpwopen.cpp
   cpwshort.cpp
   cpwstep.cpp
+  hexagonalinductor.cpp
   mscorner.cpp
   mscoupled.cpp
   mscross.cpp
@@ -25,6 +26,7 @@ SET( MICROSTRIP_SRC
   msstep.cpp
   mstee.cpp
   msvia.cpp
+  octogonalinductor.cpp
   substrate.cpp
   spiralinductor.cpp
   squareinductor.cpp

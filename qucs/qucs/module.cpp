@@ -307,6 +307,8 @@ void Module::registerModules (void) {
   REGISTER_TRANS_1 (spiralinductor);
   REGISTER_TRANS_1 (squareinductor);
   REGISTER_TRANS_1 (circularloop);
+  REGISTER_TRANS_1 (octogonalinductor);
+  REGISTER_TRANS_1 (hexagonalinductor);
   REGISTER_TRANS_1 (Coplanar);
   REGISTER_TRANS_1 (CPWopen);
   REGISTER_TRANS_1 (CPWshort);

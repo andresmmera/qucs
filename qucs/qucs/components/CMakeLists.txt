@@ -53,8 +53,8 @@ d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
 dc_sim.cpp		logic_0.cpp		photodiode.cpp		vrect.cpp
 dcblock.cpp		logic_1.cpp		phototransistor.cpp     spiralinductor.cpp
 dcfeed.cpp		logical_and.cpp		pm_modulator.cpp        circularloop.cpp
-bsim4v30nMOS.cpp        capq.cpp                indq.cpp
-bsim4v30pMOS.cpp
+bsim4v30nMOS.cpp        capq.cpp                indq.cpp                hexagonalinductor.cpp
+bsim4v30pMOS.cpp        octogonalinductor.cpp
 vcresistor.cpp
 vacomponent.cpp
 mutualx.cpp
@@ -128,6 +128,7 @@ gyrator.h
 ha1b.h
 hb_sim.h
 HBT_X.h
+hexagonalinductor.h
 hic0_full.h
 hic2_full.h
 hicumL0V1p2.h
@@ -187,6 +188,7 @@ nigbt.h
 noise_ii.h
 noise_iv.h
 noise_vv.h
+octogonalinductor.h
 opamp.h
 opt_sim.h
 optimizedialog.h

@@ -89,6 +89,7 @@
         <file>bitmaps/gyrator.png</file>
         <file>bitmaps/ha1b.png</file>
         <file>bitmaps/hb.png</file>
+        <file>bitmaps/hexagonalinductor.png</file>
         <file>bitmaps/hicumL2V2p31n.png</file>
         <file>bitmaps/home.png</file>
         <file>bitmaps/hpribin4bit.png</file>
@@ -147,6 +148,7 @@
         <file>bitmaps/npn.png</file>
         <file>bitmaps/npnsub_therm.png</file>
         <file>bitmaps/npnsub.png</file>
+        <file>bitmaps/octogonalinductor.png</file>
         <file>bitmaps/opamp.png</file>
         <file>bitmaps/optimize.png</file>
         <file>bitmaps/or.png</file>

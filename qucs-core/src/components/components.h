@@ -126,6 +126,8 @@
 #include "microstrip/spiralinductor.h"
 #include "microstrip/squareinductor.h"
 #include "microstrip/circularloop.h"
+#include "microstrip/hexagonalinductor.h"
+#include "microstrip/octogonalinductor.h"
 
 #include "microstrip/cpwline.h"
 #include "microstrip/cpwopen.h"
