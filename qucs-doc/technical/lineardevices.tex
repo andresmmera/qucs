@@ -345,6 +345,46 @@ The quality factor may vary depending on the frequency, so the following weighti
 
 \noindent where f is the frequency of the analysis.
 
+
+\subsection{Equivalent circuits}
+
+\begin{itemize}
+\item Capacitor
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=2.5cm]{capq}
+\end{center}
+\caption{Q-factor capacitor. Equivalent circuit}
+\label{fig:capq_ec}
+\end{figure}
+
+\begin{equation}
+ABCD =
+\begin{pmatrix}
+1 & R - \dfrac{j} {2 \cdot \pi\cdot C \cdot f}\\
+0 & 1\\
+\end{pmatrix}
+\end{equation}
+
+\item Inductor
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=2.5cm]{indq}
+\end{center}
+\caption{Q-factor inductor. Equivalent circuit}
+\label{fig:capq_ec}
+\end{figure}
+
+\begin{equation}
+ABCD =
+\begin{pmatrix}
+1 & R + j \cdot 2 \cdot \pi\cdot L \cdot f\\
+0 & 1\\
+\end{pmatrix}
+\end{equation}
+
+\end{itemize}
+
 \section{DC Block}
 
 A DC block is a capacitor with an infinite capacitance. During DC
