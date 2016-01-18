@@ -44,7 +44,11 @@ void indq::calcABCDparams(nr_double_t frequency)
  nr_double_t L = getPropertyDouble ("L");
  nr_double_t Q = getPropertyDouble ("Q");
  nr_double_t f = getPropertyDouble ("f");
- nr_double_t Rs = (2*pi*f*L)/Q;
+ nr_double_t Qf=Q;
+
+ if (!strcmp (getPropertyString ("Mode"), "Linear")) Qf*=frequency/f;
+ if (!strcmp (getPropertyString ("Mode"), "Quadratic"))Qf*=qucs::sqrt(frequency/f);
+ nr_double_t Rs = 1/(2*pi*frequency*L*Qf);
 
  ABCD = eye(2);
  ABCD.set(0,0,1);
@@ -95,6 +99,8 @@ PROP_REQ [] = {
   { "L", PROP_REAL, { 1e-12, PROP_NO_STR }, PROP_POS_RANGE },
   { "Q", PROP_REAL, { 100, PROP_NO_STR }, PROP_POS_RANGE },
   { "f", PROP_REAL, { 100e6, PROP_NO_STR }, PROP_NO_RANGE },
+  { "Mode", PROP_STR, { PROP_NO_VAL, "Proportional to freq" },
+    PROP_RNG_STR3 ("Linear", "Quadratic", "Constant") },
     PROP_NO_PROP };
 PROP_OPT [] = {  PROP_NO_PROP };
 struct define_t indq::cirdef =
