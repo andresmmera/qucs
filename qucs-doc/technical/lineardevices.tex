@@ -275,7 +275,6 @@ S_{12} = S_{21} = 1-S_{11}
 An ideal capacitor is noise free. Its noise correlation matrices
 are, therefore, zero.
 
-
 \section{Inductor}
 
 During DC simulation an inductor is a short circuit, thus, its
@@ -327,6 +326,24 @@ S_{12} = S_{21} = 1-S_{11}
 
 An ideal inductor is noise free.
 
+\section{Lossy reactances: Q-factor}
+The quality factor, Q, of a reactance is the ratio between the energy stored and the power dissipated into heat by the parasitic resistance.
+
+\begin{itemize}
+\item Capacitor: $Q = \frac{1}{2\cdot \pi \cdot F_0 \cdot C \cdot R}$
+\item Inductor: $Q = \frac{2\cdot \pi \cdot F_0 \cdot L }{R}$ 
+\end{itemize}
+
+\noindent where R stands for the parasitic resistance and $F_0$ is the frequency at which Q is measured, typically $F_0$ = 100 MHz. 
+The quality factor may vary depending on the frequency, so the following weighting profiles are defined:
+
+\begin{itemize}
+\item Linear: $Q(f) = Q(F_0)$ 
+\item Quadratic: $Q(f) = Q(F_0)\cdot (f/F_0)$ 
+\item Constant: $Q(f) = Q(F_0)\cdot \sqrt{f/F_0}$ 
+\end{itemize}
+
+\noindent where f is the frequency of the analysis.
 
 \section{DC Block}
 
