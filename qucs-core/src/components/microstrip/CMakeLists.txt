@@ -14,6 +14,7 @@ SET( MICROSTRIP_SRC
   cpwshort.cpp
   cpwstep.cpp
   hexagonalinductor.cpp
+  mimcap.cpp
   mscorner.cpp
   mscoupled.cpp
   mscross.cpp

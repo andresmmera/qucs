@@ -32,6 +32,7 @@
 #include "squareinductor.h"
 #include "hexagonalinductor.h"
 #include "octogonalinductor.h"
+#include "mimcap.h"
 #include "circularloop.h"
 #include "dcblock.h"
 #include "dcfeed.h"

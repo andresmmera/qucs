@@ -1,5 +1,5 @@
 /*
- * capq.cpp - Lossy capacitor class implementation
+ * mimcap.cpp - Lossy capacitor class implementation
  *
  * Copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
@@ -28,37 +28,45 @@
 #endif
 
 #include "component.h"
-#include "capq.h"
-#include "iostream"
+#include "mimcap.h"
 using namespace qucs;
 
-capq::capq () : circuit (2) {
-  type = CIR_CAPQ;
+mimcap::mimcap () : circuit (2) {
+  type = CIR_MIMCAP;
 }
 //------------------------------------------------------------------
 // This function calculates the ABCD matrix of a lossy capacitor
 // Q = 1 / (2*pi*f*Rs*C)
 // where Rs is the series resistance and C the capacitance
-void capq::calcABCDparams(nr_double_t frequency)
+void mimcap::calcABCDparams(nr_double_t frequency)
 {
- nr_double_t C = getPropertyDouble ("C");
- nr_double_t Q = getPropertyDouble ("Q");
- nr_double_t f = getPropertyDouble ("f");
- if ((f==0) || (Q==0)) Q = 1e10; //In case of unphysical inputs, the capacitor is forced to be ideal
- nr_double_t Qf=Q;
+ nr_double_t W = getPropertyDouble ("W");
+ nr_double_t l = getPropertyDouble ("l");
+ nr_double_t h = getPropertyDouble ("h");
+ nr_double_t er = getPropertyDouble ("er");
+ nr_double_t tand = getPropertyDouble ("tand");
+ nr_double_t rho = getPropertyDouble ("rho");
+ nr_double_t t = getPropertyDouble ("t");
 
- if (!strcmp (getPropertyString ("Mode"), "Linear")) Qf*=frequency/f;
- if (!strcmp (getPropertyString ("Mode"), "Quadratic"))Qf*=qucs::sqrt(frequency/f);
+ nr_double_t Kg = 0.57 - 0.145*std::log(W/h);
+ nr_double_t e0 = 8.854187817e-12;
 
- nr_double_t Rs = 1/(2*pi*frequency*C*Qf);
+ nr_double_t C = e0*er*W*l/h;
+ nr_double_t Rs = rho/t;
+ nr_double_t R = .6666*Rs*l/W;
+ nr_double_t G = 2.*pi*frequency*C*tand;
+ nr_double_t L = 2e2*l*(std::log(l/(W+t)) + 1.193 + (W+t)/(3*l))*Kg;
+ 
+
  ABCD = eye(2);
+ nr_complex_t I = nr_complex_t(0,1);
  ABCD.set(0,0,1);
- ABCD.set(0,1, Rs - nr_complex_t (0, 1)/(2.*pi*C*frequency));
+ ABCD.set(0,1, 2.*I*pi*L*frequency + R + 1./4.*I/(pi*C*G*frequency));
  ABCD.set(1,0,0);
  ABCD.set(1,1,1);
 }
 
-void capq::calcSP (nr_double_t frequency) {
+void mimcap::calcSP (nr_double_t frequency) {
   calcABCDparams(frequency);
   matrix Stmp = qucs::atos(ABCD, z0, z0);
   setMatrixS(Stmp);
@@ -66,24 +74,24 @@ void capq::calcSP (nr_double_t frequency) {
 
 
 
-void capq::initDC (void) {
+void mimcap::initDC (void) {
   allocMatrixMNA ();
   // open circuit
   clearY ();
 }
 
-void capq::initAC (void) {
+void mimcap::initAC (void) {
   setVoltageSources (0);
   allocMatrixMNA ();
 }
 
 
-void capq::initSP(void)
+void mimcap::initSP(void)
 {
   allocMatrixS ();
 }
 
-void capq::calcAC (nr_double_t frequency) {
+void mimcap::calcAC (nr_double_t frequency) {
   calcABCDparams(frequency);
   nr_complex_t y11 = ABCD.get(1,1)/ABCD.get(0,1);
   nr_complex_t y12 = -det(ABCD)/ABCD.get(0,1);
@@ -96,12 +104,14 @@ void capq::calcAC (nr_double_t frequency) {
 
 // properties
 PROP_REQ [] = {
-  { "C", PROP_REAL, { 1e-12, PROP_NO_STR }, PROP_POS_RANGE },
-  { "Q", PROP_REAL, { 100, PROP_NO_STR }, PROP_POS_RANGE },
-  { "f", PROP_REAL, { 100e6, PROP_NO_STR }, PROP_NO_RANGE },
-  { "Mode", PROP_STR, { PROP_NO_VAL, "Proportional to freq" },
-    PROP_RNG_STR3 ("Linear", "Quadratic", "Constant") },
+  { "W", PROP_REAL, { 25e-6, PROP_NO_STR }, PROP_POS_RANGE },
+  { "h", PROP_REAL, { 5e-6, PROP_NO_STR }, PROP_POS_RANGE },
+  { "l", PROP_REAL, { 10e-6, PROP_NO_STR }, PROP_POS_RANGE },
+  { "tand", PROP_REAL, { 0.0125, PROP_NO_STR }, PROP_NO_RANGE },
+  { "er", PROP_REAL, { 9.8, PROP_NO_STR }, PROP_NO_RANGE },
+  { "rho", PROP_REAL, { 4.1e7, PROP_NO_STR }, PROP_NO_RANGE },
+  { "t", PROP_REAL, { 35e-6, PROP_NO_STR }, PROP_NO_RANGE },
     PROP_NO_PROP };
 PROP_OPT [] = {  PROP_NO_PROP };
-struct define_t capq::cirdef =
-  { "CAPQ", 2, PROP_COMPONENT, PROP_NO_SUBSTRATE, PROP_LINEAR, PROP_DEF };
+struct define_t mimcap::cirdef =
+  { "MIMCAP", 2, PROP_COMPONENT, PROP_NO_SUBSTRATE, PROP_LINEAR, PROP_DEF };

@@ -120,6 +120,7 @@ enum circuit_type {
   CIR_CIRCULARLOOP,
   CIR_HEXAGONALIND,
   CIR_OCTOGONALIND,
+  CIR_MIMCAP,
 
   // coplanar components
   CIR_CPWLINE,

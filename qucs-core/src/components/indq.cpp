@@ -44,6 +44,7 @@ void indq::calcABCDparams(nr_double_t frequency)
  nr_double_t L = getPropertyDouble ("L");
  nr_double_t Q = getPropertyDouble ("Q");
  nr_double_t f = getPropertyDouble ("f");
+ if ((f==0) || (Q==0)) Q = 1e10; //In case of unphysical inputs, the capacitor is forced to be ideal
  nr_double_t Qf=Q;
 
  if (!strcmp (getPropertyString ("Mode"), "Linear")) Qf*=frequency/f;

@@ -164,6 +164,7 @@ logical_or.h
 logical_xnor.h
 logical_xor.h
 MESFET.h
+mimcap.h
 mod_amp.h
 mosfet_sub.h
 mosfet.h

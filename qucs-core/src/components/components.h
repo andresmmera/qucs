@@ -128,6 +128,7 @@
 #include "microstrip/circularloop.h"
 #include "microstrip/hexagonalinductor.h"
 #include "microstrip/octogonalinductor.h"
+#include "microstrip/mimcap.h"
 
 #include "microstrip/cpwline.h"
 #include "microstrip/cpwopen.h"
