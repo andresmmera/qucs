@@ -29,15 +29,19 @@
 
 #include "component.h"
 #include "mimcap.h"
+
 using namespace qucs;
 
 mimcap::mimcap () : circuit (2) {
   type = CIR_MIMCAP;
 }
+
 //------------------------------------------------------------------
-// This function calculates the ABCD matrix of a lossy capacitor
-// Q = 1 / (2*pi*f*Rs*C)
-// where Rs is the series resistance and C the capacitance
+// References:
+// [1] Inder Bahl. Lumped elements for RF and Microwave Circuits. Artech House 2003
+
+//------------------------------------------------------------------
+// This function calculates the ABCD matrix of a MIM capacitor
 void mimcap::calcABCDparams(nr_double_t frequency)
 {
  nr_double_t W = getPropertyDouble ("W");
@@ -51,18 +55,18 @@ void mimcap::calcABCDparams(nr_double_t frequency)
  nr_double_t Kg = 0.57 - 0.145*std::log(W/h);
  nr_double_t e0 = 8.854187817e-12;
 
- nr_double_t C = e0*er*W*l/h;
+ nr_double_t C = e0*er*W*l*1e6/h;
  nr_double_t Rs = rho/t;
  nr_double_t R = .6666*Rs*l/W;
  nr_double_t G = 2.*pi*frequency*C*tand;
- nr_double_t L = 2e2*l*(std::log(l/(W+t)) + 1.193 + (W+t)/(3*l))*Kg;
+ nr_double_t L = 2e-7*l*(std::log(l/(W+t)) + 1.193 + (W+t)/(3.*l))*Kg;
  
 
  ABCD = eye(2);
  nr_complex_t I = nr_complex_t(0,1);
- ABCD.set(0,0,1);
- ABCD.set(0,1, 2.*I*pi*L*frequency + R + 1./4.*I/(pi*C*G*frequency));
- ABCD.set(1,0,0);
+ ABCD.set(0,0,(2.*I*pi*L*frequency + R)*((2.*I*pi*C*frequency - G)*(2.*I*pi*C*frequency - G) - (-2.*I*pi*C*frequency + G)*(-2.*I*pi*C*frequency + G))/(2.*I*pi*C*frequency - G) + 1. );
+ ABCD.set(0,1, 2.*I*pi*L*frequency + R - 1./(2.*I*pi*C*frequency - G));
+ ABCD.set(1,0,((2.*I*pi*C*frequency - G)*(2.*I*pi*C*frequency - G) - (-2.*I*pi*C*frequency + G)*(-2.*I*pi*C*frequency + G))/(2.*I*pi*C*frequency - G));
  ABCD.set(1,1,1);
 }
 
