@@ -32,6 +32,11 @@
 #include "iostream"
 using namespace qucs;
 
+//--------------------------------------------------------
+// References:
+// [1] Bahl. Lumped elements for RF and microwave circuits. Pg 167
+
+
 capq::capq () : circuit (2) {
   type = CIR_CAPQ;
 }
