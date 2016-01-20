@@ -55,7 +55,7 @@ void mimcap::calcABCDparams(nr_double_t frequency)
  nr_double_t Kg = 0.57 - 0.145*std::log(W/h);
  nr_double_t e0 = 8.854187817e-12;
 
- nr_double_t C = e0*er*W*l*1e6/h;
+ nr_double_t C = e0*er*W*l/h;
  nr_double_t Rs = rho/t;
  nr_double_t R = .6666*Rs*l/W;
  nr_double_t G = 2.*pi*frequency*C*tand;
@@ -64,9 +64,9 @@ void mimcap::calcABCDparams(nr_double_t frequency)
 
  ABCD = eye(2);
  nr_complex_t I = nr_complex_t(0,1);
- ABCD.set(0,0,(2.*I*pi*L*frequency + R)*((2.*I*pi*C*frequency - G)*(2.*I*pi*C*frequency - G) - (-2.*I*pi*C*frequency + G)*(-2.*I*pi*C*frequency + G))/(2.*I*pi*C*frequency - G) + 1. );
- ABCD.set(0,1, 2.*I*pi*L*frequency + R - 1./(2.*I*pi*C*frequency - G));
- ABCD.set(1,0,((2.*I*pi*C*frequency - G)*(2.*I*pi*C*frequency - G) - (-2.*I*pi*C*frequency + G)*(-2.*I*pi*C*frequency + G))/(2.*I*pi*C*frequency - G));
+ ABCD.set(0,0,1);
+ ABCD.set(0,1, 2.*I*pi*L*frequency + R + 1./(I*2.*pi*frequency*C + G));
+ ABCD.set(1,0,0 );
  ABCD.set(1,1,1);
 }
 

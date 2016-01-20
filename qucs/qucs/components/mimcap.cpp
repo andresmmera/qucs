@@ -69,16 +69,16 @@ mimcap::mimcap()
 
   Props.append(new Property("W", "25 um", true,
 		QObject::tr("Width of the line")));
-  Props.append(new Property("h", "10 um", true,
-		QObject::tr("Insulator thickness")));
-  Props.append(new Property("l", "1 um", true,
+  Props.append(new Property("l", "25 um", true,
 		QObject::tr("Insulator length")));
-  Props.append(new Property("tand", "0.0125", true,
+  Props.append(new Property("h", "100 nm", true,
+		QObject::tr("Insulator thickness")));
+  Props.append(new Property("tand", "0.001", true,
 		QObject::tr("Dielectric loss of the insulator")));
-  Props.append(new Property("er", "9.8", true,
+  Props.append(new Property("er", "6.7", true,
 		QObject::tr("Relative dielectric coefficient of the insulator film")));
-  Props.append(new Property("rho", "4.1e7", true,
-		QObject::tr("Conductivity of the metal plates")));
+  Props.append(new Property("rho", "1.68e-8", true,
+		QObject::tr("Metal resistivity")));
   Props.append(new Property("t", "36 um", true,
 		QObject::tr("Conductor thickness")));
 
