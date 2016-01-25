@@ -42,7 +42,9 @@
 
 #include "resistor.h"
 #include "capacitor.h"
+#include "capq.h"
 #include "inductor.h"
+#include "indq.h"
 #include "mutual.h"
 #include "mutual2.h"
 #include "mutualx.h"

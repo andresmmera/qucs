@@ -51,8 +51,8 @@ cpwstep.cpp		jkff_SR.cpp		pad4bit.cpp		volt_noise.cpp
 ctline.cpp		libcomp.cpp		param_sweep.cpp		vprobe.cpp
 d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
 dc_sim.cpp		logic_0.cpp		photodiode.cpp		vrect.cpp
-dcblock.cpp		logic_1.cpp		phototransistor.cpp
-dcfeed.cpp		logical_and.cpp		pm_modulator.cpp
+dcblock.cpp		logic_1.cpp		phototransistor.cpp     capq.cpp
+dcfeed.cpp		logical_and.cpp		pm_modulator.cpp        indq.cpp
 bsim4v30nMOS.cpp
 bsim4v30pMOS.cpp
 vcresistor.cpp
@@ -81,6 +81,7 @@ bsim3v34pMOS.h
 bsim4v30nMOS.h
 bsim4v30pMOS.h
 capacitor.h
+capq.h
 cccs.h
 ccvs.h
 circulator.h
@@ -140,6 +141,7 @@ hybrid.h
 iexp.h
 ifile.h
 inductor.h
+indq.h
 iprobe.h
 ipulse.h
 irect.h
