@@ -66,7 +66,7 @@ indq::indq()
   Props.append(new Property("f", "100 MHz", true,
 		QObject::tr("Frequency at which Q is measured")));
   Props.append(new Property("Mode", "Linear", true,
-		QObject::tr("Frequency dependence mode of Q")+
+		QObject::tr("Q frequency profile")+
 		" [Linear, Quadratic, Constant]"));
 }
 indq::~indq()
