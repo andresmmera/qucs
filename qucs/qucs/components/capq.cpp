@@ -66,7 +66,7 @@ capq::capq()
   Props.append(new Property("f", "100 MHz", true,
 		QObject::tr("Frequency at which Q is measured")));
   Props.append(new Property("Mode", "Linear", true,
-		QObject::tr("Frequency weighting")+
+		QObject::tr("Frequency dependence mode of Q")+
 		" [Linear, Quadratic, Constant]"));
 }
 capq::~capq()

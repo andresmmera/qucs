@@ -194,6 +194,8 @@ void Module::intoCategory (Module * m) {
   REGISTER_COMP_2 (QObject::tr("nonlinear components"),val,inf1,inf2)
 #define REGISTER_NONLINEAR_3(val,inf1,inf2,inf3) \
   REGISTER_COMP_3 (QObject::tr("nonlinear components"),val,inf1,inf2,inf3)
+#define REGISTER_RF_PASSIVE_1(val) \
+  REGISTER_COMP_1 (QObject::tr("RF passive components"),val)
 #define REGISTER_VERILOGA_1(val) \
   REGISTER_COMP_1 (QObject::tr("verilog-a devices"),val)
 #define REGISTER_VERILOGA_2(val,inf1,inf2) \
@@ -225,24 +227,14 @@ void Module::registerModules (void) {
   // lumped components
   REGISTER_LUMPED_2 (Resistor, info, info_us);
   REGISTER_LUMPED_1 (Capacitor);
-  REGISTER_LUMPED_1 (capq);
   REGISTER_LUMPED_1 (Inductor);
-  REGISTER_LUMPED_1 (indq);
   REGISTER_LUMPED_1 (Ground);
   REGISTER_LUMPED_1 (SubCirPort);
   REGISTER_LUMPED_1 (Transformer);
   REGISTER_LUMPED_1 (symTrafo);
   REGISTER_LUMPED_1 (dcBlock);
   REGISTER_LUMPED_1 (dcFeed);
-  REGISTER_LUMPED_1 (BiasT);
-  REGISTER_LUMPED_1 (Attenuator);
   REGISTER_LUMPED_1 (Amplifier);
-  REGISTER_LUMPED_1 (Isolator);
-  REGISTER_LUMPED_1 (Circulator);
-  REGISTER_LUMPED_1 (Gyrator);
-  REGISTER_LUMPED_1 (Phaseshifter);
-  REGISTER_LUMPED_1 (Coupler);
-  REGISTER_LUMPED_1 (Hybrid);
   REGISTER_LUMPED_1 (iProbe);
   REGISTER_LUMPED_1 (vProbe);
   REGISTER_LUMPED_1 (Mutual);
@@ -250,8 +242,6 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (MutualX);
   REGISTER_LUMPED_1 (Switch);
   REGISTER_LUMPED_1 (Relais);
-  REGISTER_LUMPED_1 (RFedd);
-  REGISTER_LUMPED_1 (RFedd2P);
 
   // sources
   REGISTER_SOURCE_1 (Volt_dc);
@@ -324,6 +314,20 @@ void Module::registerModules (void) {
   REGISTER_NONLINEAR_1 (Triac);
   REGISTER_NONLINEAR_1 (Thyristor);
   REGISTER_NONLINEAR_1 (TunnelDiode);
+
+//Passive RF components
+  REGISTER_RF_PASSIVE_1 (indq);
+  REGISTER_RF_PASSIVE_1 (capq);
+  REGISTER_RF_PASSIVE_1 (Isolator);
+  REGISTER_RF_PASSIVE_1 (Circulator);
+  REGISTER_RF_PASSIVE_1 (Gyrator);
+  REGISTER_RF_PASSIVE_1 (Phaseshifter);
+  REGISTER_RF_PASSIVE_1 (Coupler);
+  REGISTER_RF_PASSIVE_1 (Hybrid);
+  REGISTER_RF_PASSIVE_1 (BiasT);
+  REGISTER_RF_PASSIVE_1 (Attenuator);
+  REGISTER_RF_PASSIVE_1 (RFedd);
+  REGISTER_RF_PASSIVE_1 (RFedd2P);
 
   // verilog-a devices
   REGISTER_VERILOGA_1 (hicumL2V2p1);

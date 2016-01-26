@@ -36,9 +36,6 @@ class capq : public qucs::circuit
   void initAC (void);
   void initSP (void);
   void calcAC (nr_double_t);
-private:
-  void calcABCDparams(nr_double_t);
-  qucs::matrix ABCD;
 };
 
 #endif /* __capq_H__ */
