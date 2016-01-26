@@ -80,7 +80,7 @@ Component* capq::newOne()
 
 Element* capq::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Q Capacitor");
+  Name = QObject::tr("Capacitor with Q");
   BitmapFile = (char *) "capq";
 
   if(getNewOne)  return new capq();
