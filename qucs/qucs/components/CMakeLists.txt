@@ -53,7 +53,7 @@ d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
 dc_sim.cpp		logic_0.cpp		photodiode.cpp		vrect.cpp
 dcblock.cpp		logic_1.cpp		phototransistor.cpp     capq.cpp
 dcfeed.cpp		logical_and.cpp		pm_modulator.cpp        indq.cpp
-bsim4v30nMOS.cpp
+bsim4v30nMOS.cpp        spiralinductor.cpp
 bsim4v30pMOS.cpp
 vcresistor.cpp
 vacomponent.cpp
@@ -210,6 +210,7 @@ sp_sim.h
 sparamfile.h
 spicedialog.h
 spicefile.h
+spiralinductor.h
 subcircuit.h
 subcirport.h
 substrate.h

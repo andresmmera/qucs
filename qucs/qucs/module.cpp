@@ -318,6 +318,7 @@ void Module::registerModules (void) {
 //Passive RF components
   REGISTER_RF_PASSIVE_1 (indq);
   REGISTER_RF_PASSIVE_1 (capq);
+  REGISTER_RF_PASSIVE_1 (spiralinductor);
   REGISTER_RF_PASSIVE_1 (Isolator);
   REGISTER_RF_PASSIVE_1 (Circulator);
   REGISTER_RF_PASSIVE_1 (Gyrator);

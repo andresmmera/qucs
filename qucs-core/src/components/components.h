@@ -126,6 +126,8 @@
 #include "microstrip/msvia.h"
 #include "microstrip/msrstub.h"
 #include "microstrip/bondwire.h"
+#include "microstrip/spiralinductor.h"
+
 
 #include "microstrip/cpwline.h"
 #include "microstrip/cpwopen.h"

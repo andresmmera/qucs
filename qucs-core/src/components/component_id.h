@@ -115,6 +115,7 @@ enum circuit_type {
   CIR_MSVIA,
   CIR_MSRSTUB,
   CIR_BONDWIRE,
+  CIR_SPIRALIND,
 
   // coplanar components
   CIR_CPWLINE,

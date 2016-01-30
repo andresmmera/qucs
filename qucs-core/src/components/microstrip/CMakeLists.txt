@@ -24,6 +24,7 @@ SET( MICROSTRIP_SRC
   msstep.cpp
   mstee.cpp
   msvia.cpp
+  spiralinductor.cpp
   substrate.cpp
 )
 
