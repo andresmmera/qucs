@@ -228,6 +228,7 @@ void module::registerModules (void) {
   REGISTER_CIRCUIT (msrstub);
   REGISTER_CIRCUIT (bondwire);
   REGISTER_CIRCUIT (spiralinductor); 
+  REGISTER_CIRCUIT (circularloop); 
   REGISTER_CIRCUIT (cpwline);
   REGISTER_CIRCUIT (cpwopen);
   REGISTER_CIRCUIT (cpwshort);

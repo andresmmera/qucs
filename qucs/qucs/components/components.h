@@ -28,6 +28,7 @@
 #include "capq.h"
 #include "inductor.h"
 #include "spiralinductor.h"
+#include "circularloop.h"
 #include "indq.h"
 #include "dcblock.h"
 #include "dcfeed.h"
