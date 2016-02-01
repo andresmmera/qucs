@@ -13,6 +13,7 @@ SET( COMPONENTS_SRC
   ccvs.cpp
   circulator.cpp
   coaxline.cpp
+  coil.cpp
   coupler.cpp
   cross.cpp
   ctline.cpp

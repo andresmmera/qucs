@@ -43,6 +43,7 @@
 #include "resistor.h"
 #include "capacitor.h"
 #include "capq.h"
+#include "coil.h"
 #include "inductor.h"
 #include "indq.h"
 #include "mutual.h"

@@ -1,7 +1,7 @@
 /*
- * capq.h - Lossy inductor class definition
+ * coil.h - Coil class definition
  *
- * Copyright (C) 2015 Andres Martinez-Mera <andresmartinezmera@gmail.com>
+ * Copyright (C) 2016 Andres Martinez-Mera <andresmartinezmera@gmail.com>
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,22 +22,22 @@
  *
  */
 
-#ifndef CAPQ_H
-#define CAPQ_H
+#ifndef COIL_H
+#define COIL_H
 #include "matrix.h"
 
 
-class capq : public qucs::circuit
+class coil : public qucs::circuit
 {
  public:
-  CREATOR (capq);
+  CREATOR (coil);
   void calcSP (nr_double_t);
   void initDC (void);
   void initAC (void);
   void initSP (void);
   void calcAC (nr_double_t);
-  nr_complex_t calcZ(nr_double_t);
+  nr_complex_t calcZ(nr_double_t frequency);
 };
 
-#endif /* __capq_H__ */
+#endif /* __indq_H__ */
 

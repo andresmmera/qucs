@@ -93,6 +93,7 @@ enum circuit_type {
   CIR_COUPLER,
   CIR_HYBRID,
   CIR_RFEDD,
+  CIR_COIL,
 
   // noise sources
   CIR_VNOISE,

@@ -36,6 +36,7 @@ class indq : public qucs::circuit
   void initAC (void);
   void initSP (void);
   void calcAC (nr_double_t);
+  nr_complex_t calcZ(nr_double_t);
 };
 
 #endif /* __indq_H__ */

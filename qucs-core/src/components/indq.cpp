@@ -43,7 +43,9 @@ indq::indq () : circuit (2) {
 // This function calculates the ABCD matrix of a lossy inductance
 // Q = 2*pi*f*L/Rs
 // where Rs is the series resistance and L the inductance
-void indq::calcSP (nr_double_t frequency) {
+
+nr_complex_t indq::calcZ(nr_double_t frequency)
+{
  nr_double_t L = getPropertyDouble ("L");
  nr_double_t Q = getPropertyDouble ("Q");
  nr_double_t f = getPropertyDouble ("f");
@@ -55,7 +57,11 @@ void indq::calcSP (nr_double_t frequency) {
    if (!strcmp (getPropertyString ("Mode"), "Quadratic"))Qf*=qucs::sqrt(frequency/f);
    Rs = 1./(2.*pi*frequency*L*Qf);
  }
- nr_complex_t Z = nr_complex_t (Rs, 2.*pi*L*frequency);
+ return nr_complex_t (Rs, 2.*pi*L*frequency);
+}
+
+void indq::calcSP (nr_double_t frequency) {
+ nr_complex_t Z = calcZ(frequency);
  qucs::matrix S;
  S = eye(2);
  S.set(0,0,Z/z0);
@@ -87,19 +93,7 @@ void indq::initSP(void)
 }
 
 void indq::calcAC (nr_double_t frequency) {
-  nr_double_t L = getPropertyDouble ("L");
-  nr_double_t Q = getPropertyDouble ("Q");
-  nr_double_t f = getPropertyDouble ("f");
-  nr_double_t Rs = 0;
-  if ((f!=0) && (Q!=0))
-  {
-   nr_double_t Qf=Q;
-   if (!strcmp (getPropertyString ("Mode"), "Linear")) Qf*=frequency/f;
-   if (!strcmp (getPropertyString ("Mode"), "Quadratic"))Qf*=qucs::sqrt(frequency/f);
-   Rs = 1/(2.*pi*frequency*L*Qf);
-  }
-  nr_complex_t Z = nr_complex_t (Rs, 2*pi*L*frequency);
-
+  nr_complex_t Z = calcZ(frequency);
   nr_complex_t y11 = 1./Z;
   nr_complex_t y12 = -1./Z;
   nr_complex_t y21 = -1./Z;

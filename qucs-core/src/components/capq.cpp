@@ -44,8 +44,8 @@ capq::capq () : circuit (2) {
 // Q = 1 / (2*pi*f*Rs*C)
 // where Rs is the series resistance and C the capacitance
 
-void capq::calcSP (nr_double_t frequency) {
- 
+nr_complex_t capq::calcZ(nr_double_t frequency)
+{
  nr_double_t C = getPropertyDouble ("C");
  nr_double_t Q = getPropertyDouble ("Q");
  nr_double_t f = getPropertyDouble ("f");
@@ -58,7 +58,12 @@ void capq::calcSP (nr_double_t frequency) {
    Rs = 1/(2*pi*frequency*C*Qf);
  }
 
- nr_complex_t Z =  nr_complex_t (Rs, -1./(2.*pi*C*frequency));
+return nr_complex_t (Rs, -1./(2.*pi*C*frequency));
+}
+
+void capq::calcSP (nr_double_t frequency) {
+ 
+ nr_complex_t Z = calcZ(frequency);
  qucs::matrix S;
  S = eye(2);
  S.set(0,0,Z/z0);
@@ -89,18 +94,7 @@ void capq::initSP(void)
 }
 
 void capq::calcAC (nr_double_t frequency) {
- nr_double_t C = getPropertyDouble ("C");
- nr_double_t Q = getPropertyDouble ("Q");
- nr_double_t f = getPropertyDouble ("f");
- if ((f==0) || (Q==0)) Q = 1e10; //In case of unphysical inputs, the capacitor is forced to be ideal
- nr_double_t Qf=Q;
-
- if (!strcmp (getPropertyString ("Mode"), "Linear")) Qf*=frequency/f;
- if (!strcmp (getPropertyString ("Mode"), "Quadratic"))Qf*=qucs::sqrt(frequency/f);
-
- nr_double_t Rs = 1/(2*pi*frequency*C*Qf);
- nr_complex_t Z =  nr_complex_t (Rs, -1./(2.*pi*C*frequency));
-
+  nr_complex_t Z = calcZ(frequency);
   nr_complex_t y11 = 1./Z;
   nr_complex_t y12 = -1./Z;
   nr_complex_t y21 = -1./Z;
