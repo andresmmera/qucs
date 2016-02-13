@@ -40,10 +40,9 @@ using namespace qucs;
 // [1] Marian K. Kazimierczuk, “High-Frequency Magnetic Components”, John Wiley & Sons, Ltd. 2009 
 // [2] Alberto Reatti and Marian K. Kazimierczuk, „Comparison of Various Methods for Calculating 
 // the AC Resistance of Inductors”, IEEE Transactions on Magnetics, Vol. 38, No. 3, May 2002 
-// [3] Gabriele Grandi, Marian K. Kazimierczuk, Antonio Massarini, and Ugo Reggiani, „Stray Capacitances of Single-Layer 
-// Solenoid Air-Core Inductors”, IEEE Transactions on Industry Application, Vol. 35, No.5, September/October 1999
-// [4] Peter Csurgai, Miklos Kuczmann, Comparison of various high-frequency models of RF chip inductors, 
-// “Szécheny István” University, Lab. of Electromagnetic Field, Dept. of Telecommunications, Hungary
+// [3] R. Lundin, "A Handbook Formula for the Inductance of a Single-Layer Circular Coil," Proc. IEEE, 
+// vol. 73, no. 9, pp. 1428-1429, Sep. 1985.
+
 
 // Equivalent circuit:
 //  >------- L ----- R --------<
@@ -53,34 +52,59 @@ coil::coil () : circuit (2) {
   type = CIR_COIL;
 }
 
-
-nr_complex_t coil::calcZ(nr_double_t frequency)
+// ([1], page 165)
+nr_double_t coil::calculateSeriesR(nr_double_t rho_0, nr_double_t T_0, nr_double_t T, nr_double_t alpha, nr_double_t r, nr_double_t D, nr_double_t pitch, nr_double_t frequency, nr_complex_t mu)
 {
- nr_double_t omega = 2*pi*frequency;
- nr_double_t N = getPropertyDouble ("N");//Number of turns
- nr_double_t Coil_Radius = getPropertyDouble ("Coil_Radius");//Turn radius
- nr_double_t Cond_Radius = getPropertyDouble ("Cond_Radius");//Radius of the winding wire
- nr_double_t mu_r = getPropertyDouble ("mu_r");//Relative permeability
- nr_double_t rho_0 = getPropertyDouble ("rho_0");//Conductor resistance measured at a given temperature
- nr_double_t T_0 = getPropertyDouble ("T_0");//Temperature at which rho was measured
- nr_double_t T = getPropertyDouble ("T");//Current temperature
- nr_double_t pitch = getPropertyDouble ("pitch");//Pitch, spacing between turns
- nr_double_t er = getPropertyDouble("e_r");//Dielectric permittivity of the material between turns, typically air.
- nr_double_t fH = getPropertyDouble("fH");//3dB Frequency threshold. It indicates at which frequency real(mu) = .5*mu_0 of the core material
- nr_double_t alpha = getPropertyDouble("alpha");//Temperature coefficient of the conductor resistivity
+  nr_double_t omega = 2*pi*frequency;
+  // Series resistance
+  nr_double_t rho_t = rho_0*(1+alpha*(T-T_0));//Calculation of the resistivity as a function of the frequency. 
+  nr_double_t R_DC = rho_t*D/(r*r);
+  nr_double_t skin_depth = qucs::sqrt((2*rho_t)/(omega*4e-7*pi));//mu_r = 1 \forall freq for common conductors, like Copper
+  // Dowell's method ([1], page 296) [2]
+  nr_double_t A = qucs::pow(pi/4, .75)*(r/skin_depth)*qucs::sqrt(r/pitch);//Normalised thickness wrt the skin effect
+  nr_double_t F = A*(qucs::sinh(2*A)+qucs::sin(2*A))/(qucs::cosh(2*A) - qucs::cos(2*A));//Skin effect contribution to the increasement of the AC resistance
+  nr_double_t Rhisteresis = -omega*imag(mu)*L;//Loss caused by the core hysteresis
+  return R = R_DC*F + Rhisteresis;
+}
+
+nr_double_t coil::f1(nr_double_t x)
+{
+   return (1+.383901*x+.017108*x*x)/(1+ .258952*x);
+}
 
 
- nr_double_t length = N*(2*Cond_Radius) + (N-1)*pitch;//Length of the solenoid
- if (pitch <= 2*Cond_Radius)//The spacing between turns must be more than the wire diameter
+nr_double_t coil::f2(nr_double_t x)
+{
+   return .093842*x + .002029*x*x - .000801*x*x*x;
+}
+
+//Inductance calculation according to Lundin's formula
+nr_double_t coil::getL_Lundin(nr_double_t a, nr_double_t b, nr_double_t mu, int N)
+{
+int ab_ratio = .25*b*b/(a*a);
+ if ((ab_ratio > 0)&&(ab_ratio <= 1))
  {
-   pitch = 2.1*Cond_Radius;
-   logprint(LOG_ERROR,"Warning: The pitch cannot be less than the wire diameter.\nPitch = %g will be used instead",pitch);
+    if (2*a<=b)
+    {
+      L = (mu*N*N*pi*a*a/b)*(f1(4*a*a/(b*b)) - 8*a/(3*pi*b));
+    }
+    else
+    {
+      L = mu*N*N*a*(f1(.25*b*b/(a*a))*(qucs::log(8*a/b)-.5) - f2(.25*b*b/(a*a)))
+    }
  }
+ else
+ {
+   L = -1;
+ }
+ return L;
+}
 
- nr_double_t L, mu_0 = 4e-7*pi;
 
-
-// Core permeability ([1], page 139)
+//([1], page 139)
+nr_complex_t coil::getPermeability(nr_double_t fH, nr_double_t frequency)
+{
+ nr_double_t mu_0 = 4e-7*pi;
  nr_complex_t mu;
  if (fH > 0)
  {
@@ -93,35 +117,39 @@ nr_complex_t coil::calcZ(nr_double_t frequency)
   // the hysteresis effect is not taken into consideration.
   mu = nr_complex_t(mu_0*mu_r,0);
  }
+return mu;
+}
 
-// Inductance calculation ([1], page 45)
-// The high frequency model of a solenoid states that H and B vectors are not parallel, so the permeability is no longer a scalar. The real
-// part of mu is related to the inductance and the imaginary part indicates the resistive loss caused by the magnetic core because of 
-// the hysteris ([1], page 145)
+nr_double_t coil::getSelfCapacitance(nr_double_t D, nr_double_t len, nr_double_t e_rx, nr_double_t e_ri, nr_double_t pitch_angle)
+{
+ nr_double_t Kc = 0.717439*(D/len) + .933048*qucs::pow(D/len, .66666667) + .106*(D*D/(len*len));
+ return (4*e_0*e_rx*len/pi)*qucs::cos(pitch_angle)*qucs::cos(pitch_angle)*(1+.5*Kc*(1+e_ri/e_rx)); 
+}
 
-  if (!strcmp (getPropertyString ("L_formula"), "Wheeler"))
-  {
-    L = real(mu)*Coil_Radius*Coil_Radius*pi*N*N/(length*(1+.9*Coil_Radius));
-  }
-  else{//Improved solenoid formula [4]
-    L = real(mu)*Coil_Radius*Coil_Radius*pi*N*N/(qucs::sqrt(length*length + 4*Coil_Radius*Coil_Radius));
-  }
+nr_complex_t coil::calcZ(nr_double_t frequency)
+{
+ nr_double_t omega = 2*pi*frequency;
+ nr_double_t N = getPropertyDouble ("N");//Number of turns
+ nr_double_t Coil_Radius = getPropertyDouble ("D");//Coil diameter
+ nr_double_t Cond_Radius = getPropertyDouble ("d");//Wire diameter
+ nr_double_t mu_r = getPropertyDouble ("mu_r");//Relative permeability of the core
+ nr_double_t rho_0 = getPropertyDouble ("rho_0");//Wire resistivity measured at a given temperature
+ nr_double_t T_0 = getPropertyDouble ("T_0");//Temperature at which rho_0 was measured
+ nr_double_t T = getPropertyDouble ("T");//Current temperature
+ nr_double_t alpha = getPropertyDouble("alpha");//Temperature coefficient of the conductor resistivity
+ nr_double_t pitch = getPropertyDouble ("pitch");//Pitch, spacing between turns
+ nr_double_t pitch_angle = getPropertyDouble("pitch_angle");//Pitch angle (in degrees)
+ nr_double_t erx = getPropertyDouble("e_rx");//Dielectric permittivity of the coil former
+ nr_double_t eri = getPropertyDouble("e_ri");//Dielectric permittivity of the coil hollow
+ nr_double_t fH = getPropertyDouble("fH");//In case the core is a ferromagnetic material, this field states for the 3dB frequency threshold. It indicates at which frequency real(mu) = .5*mu_0 of the core material. Otherwise, this parameter must be < 0.
 
-  // Series resistance
-  nr_double_t rho_t = rho_0*(1+alpha*(T-T_0));//Calculation of the resistivity as a function of the frequency. ([1], page 165)
-  nr_double_t R_DC = rho_t*(2*Coil_Radius)/(Cond_Radius*Cond_Radius);
-  nr_double_t skin_depth = qucs::sqrt((2*rho_t)/(omega*mu_0));//mu_r = 1 \forall freq for common conductors, like Copper
-  // Dowell's method ([1], page 296) [2]
-  nr_double_t A = qucs::pow(pi/4, .75)*(Cond_Radius/skin_depth)*qucs::sqrt(Cond_Radius/pitch);//Normalised thickness wrt the skin effect
-  nr_double_t F = A*(qucs::sinh(2*A)+qucs::sin(2*A))/(qucs::cosh(2*A) - qucs::cos(2*A));//Skin effect contribution to the increasement of the AC resistance
-  nr_double_t Rhisteresis = -omega*imag(mu)*L;//Loss caused by the core hysteresis
-  nr_double_t R = R_DC*F + Rhisteresis;
 
+ nr_complex_t mu = getPermeability(fH, frequency);// Core permeability 
 
-  // Capacitance equivalent. [3]
-  nr_double_t epsilon = 8.854187817620389851e-12*er;
-  nr_double_t Ctt = pi*pi*(2*Coil_Radius)*epsilon/(qucs::log((.5*pitch/Cond_Radius) + qucs::sqrt(-1 + .25*pitch*pitch/(Cond_Radius*Cond_Radius))) );//Turn to turn capacitance
-  nr_double_t C = Ctt/(N-1);
+// Equivalent circuit elements
+ nr_double_t L = getL_Lundin(a, b, real(mu), nN);
+ nr_double_t R = calculateSeriesR(rho_0, T_0, T, alpha, d/2, D, pitch, frequency, mu);
+ nr_double_t C = getSelfCapacitance();
 
   return nr_complex_t (R, omega*L)/nr_complex_t(-omega*omega*L*C+1, omega*R*C);
 }
@@ -184,7 +212,7 @@ PROP_REQ [] = {
   { "mu_r", PROP_REAL, { 1, PROP_NO_STR }, PROP_NO_RANGE },
   { "fH", PROP_REAL, { 1e6, PROP_NO_STR }, PROP_NO_RANGE },
   { "L_formula", PROP_STR, { PROP_NO_VAL, "Wheeler" },
-    PROP_RNG_STR2 ("Wheeler", "Improved_solenoid_equation") },
+    PROP_RNG_STR2 ("Wheeler", "Lundin") },
     PROP_NO_PROP };
 PROP_OPT [] = {  PROP_NO_PROP };
 struct define_t coil::cirdef =

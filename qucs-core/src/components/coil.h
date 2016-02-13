@@ -36,7 +36,13 @@ class coil : public qucs::circuit
   void initAC (void);
   void initSP (void);
   void calcAC (nr_double_t);
+ private:
   nr_complex_t calcZ(nr_double_t frequency);
+  nr_double_t getL_Lundin(nr_double_t, nr_double_t, nr_double_t, int);
+  nr_double_t f1(nr_double_t);
+  nr_double_t f2(nr_double_t);
+  nr_complex_t getPermeability(nr_double_t, nr_double_t);
+  nr_double_t  calculateSeriesR(nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_complex_t);
 };
 
 #endif /* __indq_H__ */
