@@ -164,10 +164,8 @@ void module::registerModules (void) {
   // circuit components
   REGISTER_CIRCUIT (resistor);
   REGISTER_CIRCUIT (capacitor);
-  REGISTER_CIRCUIT (capq);
   REGISTER_CIRCUIT (pac);
   REGISTER_CIRCUIT (inductor);
-  REGISTER_CIRCUIT (indq);
   REGISTER_CIRCUIT (coil);
   REGISTER_CIRCUIT (vccs);
   REGISTER_CIRCUIT (cccs);
@@ -228,8 +226,6 @@ void module::registerModules (void) {
   REGISTER_CIRCUIT (msvia);
   REGISTER_CIRCUIT (msrstub);
   REGISTER_CIRCUIT (bondwire);
-  REGISTER_CIRCUIT (spiralinductor); 
-  REGISTER_CIRCUIT (circularloop); 
   REGISTER_CIRCUIT (cpwline);
   REGISTER_CIRCUIT (cpwopen);
   REGISTER_CIRCUIT (cpwshort);

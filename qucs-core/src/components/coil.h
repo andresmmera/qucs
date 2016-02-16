@@ -43,6 +43,7 @@ class coil : public qucs::circuit
   nr_double_t f2(nr_double_t);
   nr_complex_t getPermeability(nr_double_t, nr_double_t);
   nr_double_t  calculateSeriesR(nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_complex_t);
+  nr_double_t getSelfCapacitance(nr_double_t, nr_double_t, nr_double_t, nr_double_t, nr_double_t);
 };
 
 #endif /* __indq_H__ */

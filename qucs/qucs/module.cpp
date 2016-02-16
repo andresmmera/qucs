@@ -316,10 +316,6 @@ void Module::registerModules (void) {
   REGISTER_NONLINEAR_1 (TunnelDiode);
 
 //Passive RF components
-  REGISTER_RF_PASSIVE_1 (indq);
-  REGISTER_RF_PASSIVE_1 (capq);
-  REGISTER_RF_PASSIVE_1 (spiralinductor);
-  REGISTER_RF_PASSIVE_1 (circularloop);
   REGISTER_RF_PASSIVE_1 (coil);
   REGISTER_RF_PASSIVE_1 (Isolator);
   REGISTER_RF_PASSIVE_1 (Circulator);

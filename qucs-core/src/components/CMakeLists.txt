@@ -8,7 +8,6 @@ SET( COMPONENTS_SRC
   attenuator.cpp
   biastee.cpp
   capacitor.cpp
-  capq.cpp
   cccs.cpp
   ccvs.cpp
   circulator.cpp
@@ -29,7 +28,6 @@ SET( COMPONENTS_SRC
   ifile.cpp
   iinoise.cpp
   inductor.cpp
-  indq.cpp
   inoise.cpp
   iprobe.cpp
   ipulse.cpp

@@ -55,7 +55,7 @@ coil::coil () : circuit (2) {
 // ([1], page 165)
 nr_double_t coil::calculateSeriesR(nr_double_t rho_0, nr_double_t T_0, nr_double_t T, nr_double_t alpha, nr_double_t r, nr_double_t D, nr_double_t pitch, nr_double_t frequency, nr_complex_t mu)
 {
-  nr_double_t omega = 2*pi*frequency;
+  nr_double_t omega = 2*pi*frequency, L;
   // Series resistance
   nr_double_t rho_t = rho_0*(1+alpha*(T-T_0));//Calculation of the resistivity as a function of the frequency. 
   nr_double_t R_DC = rho_t*D/(r*r);
@@ -64,7 +64,7 @@ nr_double_t coil::calculateSeriesR(nr_double_t rho_0, nr_double_t T_0, nr_double
   nr_double_t A = qucs::pow(pi/4, .75)*(r/skin_depth)*qucs::sqrt(r/pitch);//Normalised thickness wrt the skin effect
   nr_double_t F = A*(qucs::sinh(2*A)+qucs::sin(2*A))/(qucs::cosh(2*A) - qucs::cos(2*A));//Skin effect contribution to the increasement of the AC resistance
   nr_double_t Rhisteresis = -omega*imag(mu)*L;//Loss caused by the core hysteresis
-  return R = R_DC*F + Rhisteresis;
+  return R_DC*F + Rhisteresis;
 }
 
 nr_double_t coil::f1(nr_double_t x)
@@ -82,6 +82,7 @@ nr_double_t coil::f2(nr_double_t x)
 nr_double_t coil::getL_Lundin(nr_double_t a, nr_double_t b, nr_double_t mu, int N)
 {
 int ab_ratio = .25*b*b/(a*a);
+nr_double_t L;
  if ((ab_ratio > 0)&&(ab_ratio <= 1))
  {
     if (2*a<=b)
@@ -90,7 +91,7 @@ int ab_ratio = .25*b*b/(a*a);
     }
     else
     {
-      L = mu*N*N*a*(f1(.25*b*b/(a*a))*(qucs::log(8*a/b)-.5) - f2(.25*b*b/(a*a)))
+      L = mu*N*N*a*(f1(.25*b*b/(a*a))*(qucs::log(8*a/b)-.5) - f2(.25*b*b/(a*a)));
     }
  }
  else
@@ -104,7 +105,7 @@ int ab_ratio = .25*b*b/(a*a);
 //([1], page 139)
 nr_complex_t coil::getPermeability(nr_double_t fH, nr_double_t frequency)
 {
- nr_double_t mu_0 = 4e-7*pi;
+ nr_double_t mu_0 = 4e-7*pi, mu_r=1;
  nr_complex_t mu;
  if (fH > 0)
  {
@@ -122,8 +123,8 @@ return mu;
 
 nr_double_t coil::getSelfCapacitance(nr_double_t D, nr_double_t len, nr_double_t e_rx, nr_double_t e_ri, nr_double_t pitch_angle)
 {
- nr_double_t Kc = 0.717439*(D/len) + .933048*qucs::pow(D/len, .66666667) + .106*(D*D/(len*len));
- return (4*e_0*e_rx*len/pi)*qucs::cos(pitch_angle)*qucs::cos(pitch_angle)*(1+.5*Kc*(1+e_ri/e_rx)); 
+ //nr_double_t Kc = 0.717439*(D/len) + .933048*qucs::pow(D/len, .66666667) + .106*(D*D/(len*len));
+ return nr_double_t(0);//(4*e_0*e_rx*len/pi)*qucs::cos(pitch_angle)*qucs::cos(pitch_angle)*(1+.5*Kc*(1+e_ri/e_rx)); 
 }
 
 nr_complex_t coil::calcZ(nr_double_t frequency)
@@ -147,11 +148,11 @@ nr_complex_t coil::calcZ(nr_double_t frequency)
  nr_complex_t mu = getPermeability(fH, frequency);// Core permeability 
 
 // Equivalent circuit elements
- nr_double_t L = getL_Lundin(a, b, real(mu), nN);
- nr_double_t R = calculateSeriesR(rho_0, T_0, T, alpha, d/2, D, pitch, frequency, mu);
- nr_double_t C = getSelfCapacitance();
+// nr_double_t L = getL_Lundin(a, b, real(mu), nN);
+ //nr_double_t R = calculateSeriesR(rho_0, T_0, T, alpha, d/2, D, pitch, frequency, mu);
+ //nr_double_t C = getSelfCapacitance();
 
-  return nr_complex_t (R, omega*L)/nr_complex_t(-omega*omega*L*C+1, omega*R*C);
+  return nr_complex_t(0,0);//nr_complex_t (R, omega*L)/nr_complex_t(-omega*omega*L*C+1, omega*R*C);
 }
 
 void coil::calcSP (nr_double_t frequency) {
