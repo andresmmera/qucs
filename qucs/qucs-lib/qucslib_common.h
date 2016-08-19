@@ -23,6 +23,12 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "symbolwidget.h"
+
+// global functions and data structures for the processing of
+// qucs library files
+
+
 // Application settings.
 struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
@@ -35,13 +41,7 @@ struct tQucsSettings {
 };
 
 
-// global functions and data structures for the processing of
-// qucs library files
-
-enum LIB_PARSE_RESULT { QUCS_COMP_LIB_OK,
-                        QUCS_COMP_LIB_IO_ERROR,
-                        QUCS_COMP_LIB_CORRUPT,
-                        QUCS_COMP_LIB_EMPTY };
+extern tQucsSettings QucsSettings;
 
 struct ComponentLibraryItem
 {
@@ -51,6 +51,8 @@ struct ComponentLibraryItem
     QString modelString;
 } ;
 
+
+
 struct ComponentLibrary
 {
     QString name;
@@ -59,7 +61,14 @@ struct ComponentLibrary
 } ;
 
 
-extern tQucsSettings QucsSettings;
+
+enum LIB_PARSE_RESULT { QUCS_COMP_LIB_OK,
+                        QUCS_COMP_LIB_IO_ERROR,
+                        QUCS_COMP_LIB_CORRUPT,
+                        QUCS_COMP_LIB_EMPTY };
+
+
+
 
 // gets the contents of a section from a coponent description
 //
@@ -217,6 +226,7 @@ inline int makeModelString (QString libname, QString compname, QString compstrin
     return QUCS_COMP_LIB_OK;
 
 }
+
 
 inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
 {

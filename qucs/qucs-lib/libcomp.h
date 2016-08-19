@@ -1,8 +1,13 @@
+#ifndef LIBCOMP_H
+#define LIBCOMP_H
+
 #include "symbol.h"
 #include "qucslib_common.h"
+
 /*!
  * \brief this library provides symbols. these.
  */
+
 
 
 
@@ -48,7 +53,7 @@ QucsLibComponent::QucsLibComponent( QString& SymbolString_,
 
 
 
-int QucsLibComponent::draw(QWidget& w)
+int QucsLibComponent::draw(SymbolWidget& w)
 {
   w.Arcs.clear();
   w.Lines.clear();
@@ -96,3 +101,5 @@ int QucsLibComponent::draw(QWidget& w)
   return z;      // return number of ports
 }
 
+
+#endif
