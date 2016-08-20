@@ -4,32 +4,83 @@
 #include "symbol.h"
 #include "qucslib_common.h"
 
+#include "symbolwidget.h" // Line etc.
 /*!
  * \brief this library provides symbols. these.
  */
 
 
+struct Line;
+struct Arc;
+struct Area;
+struct Text;
 
 
 class QucsLibComponent : public Symbol{
-        private:
-        QString SymbolString, LibraryName, ComponentName;
-	public:
-	QucsLibComponent( QString& , const QString&, const QString& );
-        int draw(QWidget&);
+private:
+  QString SymbolString, LibraryName, ComponentName;
+public:
+  QucsLibComponent( QString& , const QString&, const QString& );
+  void draw(QWidget&) const;
+public:
+  void init(const QString& Lib_, const QString& Comp_); // help construction
+public: // symbol interface overloads
+  Symbol* newOne() const { return new QucsLibComponent(*this); }
+  unsigned portNumber() const{return PortNumber;}
+private: // implementation
+  int  analyseLine(const QString&);
+  bool getPen  (const QString&, QPen&, int);
+  bool getBrush(const QString&, QBrush&, int);
+private: // component specifics.
+  mutable QString ModelString; // BUG: must not be mutable. construct properly
+  QString VerilogModelString;
+  QString VHDLModelString;
+  QString Prefix;
+  int Text_x, Text_y;
+private: // gfx data
+  int TextWidth=100;
+  int TextHeight;
+  int cx, cy, x1=0, x2=0, y1=0, y2=0;
+  QList<Line *> Lines;
+  QList<Arc *> Arcs;
+  QList<Area *> Rects, Ellips;
+  QList<Text *>  Texts;
+  unsigned PortNumber;
+public: // bogus obsolete XML creation.
+        // don't use in new code... DONT.
+  QString theModel() const{
+  // single component line
+  if(!ModelString.isEmpty())
+    if(ModelString.count('\n') < 2)
+      return ModelString.remove('\n');
+
+  // real library component
+  return "<Lib " + Prefix + " 1 0 0 " +
+         QString::number(Text_x) + " " +
+         QString::number(Text_y) + " 0 0 \"" +
+         LibraryName + "\" 0 \"" + ComponentName + "\" 0>";
+  }
+public: // something
+  void doSomething(QWidget& w) const;
+public:  // more random access to private members (transitional?)
+  QString modelString() const{ return ModelString;}
+  QString verilogModelString() const{ return VerilogModelString;}
+  QString vHDLModelString() const { return VHDLModelString;}
 };
 
 extern tQucsSettings QucsSettings;
 
-QucsLibComponent::QucsLibComponent( QString& SymbolString_,
+inline QucsLibComponent::QucsLibComponent( QString& SymbolString_,
                             const QString& Lib_, const QString& Comp_)
-	: SymbolString(SymbolString_), LibraryName(Lib_), ComponentName(Comp_)
+	: SymbolString(SymbolString_), LibraryName(Lib_), ComponentName(Comp_),
+  cx(0), cy(0), x1(0), x2(0), y1(0), y2(0)
 {
+  init(Lib_, Comp_);
   if (SymbolString.isEmpty())//Whenever SymbolString is empty, it tries to load the default symbol
   {
       //Load the default symbol for the current Qucs library
       ComponentLibrary parsedlib;
-      QString libpath = QucsSettings.LibDir + Lib_ + ".lib";
+      QString libpath = QucsSettings.LibDir + "/" + Lib_ + ".lib";
       int result = parseComponentLibrary (libpath, parsedlib);
 
 		// BUG: throw if there is an error. don't randomly spawn Messageboxes
@@ -48,57 +99,80 @@ QucsLibComponent::QucsLibComponent( QString& SymbolString_,
 
     // copy the contents of default symbol section to a string
     SymbolString = parsedlib.defaultSymbol;
-  }
-}
-
-
-
-int QucsLibComponent::draw(SymbolWidget& w)
-{
-  w.Arcs.clear();
-  w.Lines.clear();
-  w.Rects.clear();
-  w.Ellips.clear();
-  w.Texts.clear();
 
   QString Line;
   ///QString foo = SymbolString;
   QTextStream stream(&SymbolString, QIODevice::ReadOnly);
 
-  w.x1 = w.y1 = INT_MAX;
-  w.x2 = w.y2 = INT_MIN;
+  x1 = y1 = INT_MAX;
+  x2 = y2 = INT_MIN;
 
   int z=0, Result;
+
+  int error=0; // BUG: that's what enums are for
+               // BUG2: throw in case of input errors! (not yet)
   while(!stream.atEnd()) {
     Line = stream.readLine();
     Line = Line.trimmed();
     if(Line.isEmpty()) continue;
 
-    if(Line.at(0) != '<') return -1; // check for start char
-    if(Line.at(Line.length()-1) != '>') return -1; // check for end char
+    if(Line.at(0) != '<'){
+		 // missing for start char
+		 error=-1;
+		 break;
+	 }
+    if(Line.at(Line.length()-1) != '>'){
+		 // missing for end char
+		 error=-1;
+		 break;
+	 }
     Line = Line.mid(1, Line.length()-2); // cut off start and end character
-    Result = w.analyseLine(Line);
-    if(Result < 0) return -6;   // line format error
+    Result = analyseLine(Line);
+    if(Result < 0){
+		 // line format error
+		 error=-6;
+		 break;
+	 }
     z += Result;
   }
 
-  w.x1 -= 4;   // enlarge component boundings a little
-  w.x2 += 4;
-  w.y1 -= 4;
-  w.y2 += 4;
-  w.cx  = -w.x1 + w.TextWidth;
-  w.cy  = -w.y1;
+  if(error){
+//	  library is broken. what next?
+  }
 
-  int dx = w.x2-w.x1 + w.TextWidth;
-  if((w.x2-w.x1) < w.DragNDropWidth)
-    dx = (w.x2-w.x1 + w.DragNDropWidth)/2 + w.TextWidth;
-  if(dx < w.DragNDropWidth)
-    dx = w.DragNDropWidth;
-  w.setMinimumSize(dx, w.y2-w.y1 + w.TextHeight+4);
-  if(w.width() > dx)  dx = w.width();
-  w.resize(dx, w.y2-w.y1 + w.TextHeight+4);
-  w.update();
-  return z;      // return number of ports
+  x1 -= 4;   // enlarge component boundings a little
+  x2 += 4;
+  y1 -= 4;
+  y2 += 4;
+  cx  = -x1 + TextWidth;
+  cy  = -y1;
+
+  }
+}
+
+
+inline void QucsLibComponent::doSomething(QWidget& w) const
+{
+
+  // what is this? figure out soon
+  int DragNDropWidth=130;
+  int TextHeight=20;
+
+  int dx = x2-x1 + TextWidth;
+  if((x2-x1) < DragNDropWidth)
+   { 
+   dx = (x2-x1 + DragNDropWidth)/2 + TextWidth;}
+  if(dx < DragNDropWidth){
+    dx = DragNDropWidth;
+  }
+  w.setMinimumSize(dx, y2-y1 + TextHeight+4);
+  if(w.width() > dx){
+	  dx = w.width();
+  }
+  w.resize(dx, y2-y1 + TextHeight+4);
+  w.update(); // what does it do?
+//   return z;      // return number of ports
+
 }
 
 

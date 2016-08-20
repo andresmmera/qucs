@@ -30,7 +30,7 @@
 #include <QMessageBox>
 
 #include "qucslib_common.h"
-
+#include "libcomp.h"
 /*!
  * \file symbolwidget.h
  * \brief Definition of the SymbolWidget class.
@@ -88,6 +88,7 @@ struct Text {
   bool	  over, under;      // text attributes
 };
 
+class QucsLibComponent;
 
 class SymbolWidget : public QWidget  {
    Q_OBJECT
@@ -95,22 +96,27 @@ public:
   SymbolWidget(QWidget *parent = 0);
  ~SymbolWidget();
 
-  QString theModel();
-  int setSymbol( QString&, const QString&, const QString&);
+
+  // what does this do? there is no symbol here...
   int createSymbol(const QString&, const QString&);
 
   // component properties
-  int Text_x, Text_y;
-  QString Prefix, LibraryName, ComponentName;
-  QString ModelString, VerilogModelString, VHDLModelString;
 
-  QList<Line *> Lines;
-  QList<Arc *> Arcs;
-  QList<Area *> Rects, Ellips;
-  QList<Text *>  Texts;
-  int cx, cy, x1, x2, y1, y2;
-  int TextWidth, DragNDropWidth, TextHeight;
-  int  analyseLine(const QString&);
+  int DragNDropWidth, TextHeight, TextWidth;
+
+public:
+  // "attach" means "transfer ownership"
+  // we could do more stuff here, such as check bounding boxes
+  // (maybe we should)
+  void attachSymbol(Symbol const* s); // bug. must be Symbol const*
+
+public: // symbol-thru-access. slightly hackish
+        // obsolete, maybe (after cleanup).
+		  // lets be explicit, for now
+  QString theModel() const;
+  QString modelString() const;
+  QString verilogModelString() const;
+  QString vHDLModelString() const;
 
 protected:
   void mouseMoveEvent(QMouseEvent*);
@@ -118,15 +124,12 @@ protected:
 private:
   void  paintEvent(QPaintEvent*);
 
-
-
-  bool getPen  (const QString&, QPen&, int);
-  bool getBrush(const QString&, QBrush&, int);
-
   QString PaintText;
   QString DragNDropText;
   QString Warning;
 
+  // this is actually a Symbol, but with some headache.
+  QucsLibComponent const* symbol;
 };
 
 #endif // SYMBOLWIDGET_H

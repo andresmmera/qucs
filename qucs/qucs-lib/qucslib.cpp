@@ -67,7 +67,6 @@ QucsLib::QucsLib()
     fileMenu->addSeparator();
     fileMenu->addAction(fileQuit);
 
-
     // create help menu
     helpMenu = new QMenu(tr("&Help"));
 
@@ -291,7 +290,11 @@ void QucsLib::slotCopyToClipBoard()
 // ----------------------------------------------------
 void QucsLib::slotShowModel()
 {
-    DisplayDialog *d = new DisplayDialog(this, symWidget->ModelString, symWidget->VHDLModelString, symWidget->VerilogModelString);
+    // uh, why three strings?!
+    DisplayDialog *d = new DisplayDialog(this,
+			 symWidget->modelString(),
+			 symWidget->vHDLModelString(),
+			 symWidget->verilogModelString());
     d->setWindowTitle(tr("Model"));
     d->resize(500, 150);
     d->show();
@@ -319,13 +322,11 @@ void QucsLib::slotSelectLibrary(int Index)
 
     QString filename;
 
-    if(Index < UserLibCount)  // Is it user library ?
-    {
-        filename = UserLibDir.absolutePath() + QDir::separator() + Library->itemText(Index) + ".lib";
-    }
-    else
-    {
-        filename = QucsSettings.LibDir + Library->itemText(Index) + ".lib";
+    if(Index < UserLibCount){  // Is it user library ?
+      filename = UserLibDir.absolutePath() + QDir::separator() + Library->itemText(Index) + ".lib";
+    }else{
+      filename = QucsSettings.LibDir + QDir::separator() + Library->itemText(Index) + ".lib";
+      qDebug() << "lib file there?" << filename;
     }
 
     ComponentLibrary parsedlib;
@@ -484,6 +485,7 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
         QMessageBox::critical(this, tr("Error"), tr("Library is corrupt."));
         return;
     }
+#if 0 // what's this?
     symWidget->ModelString = content;
     if(symWidget->ModelString.count('\n') < 2)
         symWidget->createSymbol(LibName, Item->text());
@@ -501,6 +503,7 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
         return;
     }
     symWidget->VerilogModelString = content;
+#endif
 
     if(!getSection("Symbol", CompString, content))
     {
@@ -508,10 +511,11 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
         return;
     }
 
-	 // it's a bit late, but without a symbol we cannot draw a symbol to the
-	 // widget... lets create a symbol!
-    QucsLibComponent compSym(content, LibName, Item->text());
-    compSym.draw(symWidget);
+    // it's a bit late, but without a symbol we cannot attach a symbol to the
+    // widget... lets create a symbol!
+    // hint: the library should contain QucsLibComponents...
+    Symbol* s=new QucsLibComponent(content, LibName, Item->text());
+    symWidget->attachSymbol(s);
 
     // change currently selected category, so the user will 
     //   learn where the component comes from
@@ -523,4 +527,4 @@ void QucsLib::slotShowComponent(QListWidgetItem *Item)
     //!!   returns back to the last selected category instead
 }
 
-
+// vim:ts=8:sw=2:noet

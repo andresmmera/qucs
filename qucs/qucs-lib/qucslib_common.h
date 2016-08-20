@@ -22,14 +22,9 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QDebug>
+#include "settings.h"
 
-#include "symbolwidget.h"
-
-// global functions and data structures for the processing of
-// qucs library files
-
-
-// Application settings.
+#if 0 // already defined. but not included here?
 struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
   QFont font;          // font
@@ -39,6 +34,7 @@ struct tQucsSettings {
   QDir QucsWorkDir;  // Qucs user directory where user works (usually same as QucsWorkDir
   QDir QucsHomeDir;  // Qucs user directory where all projects are located
 };
+#endif
 
 
 extern tQucsSettings QucsSettings;
@@ -233,6 +229,7 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
 
     int Start, End, NameStart, NameEnd;
 
+    qDebug() << filename;
     QFile file (filename);
 
     if(!file.open(QIODevice::ReadOnly))
@@ -245,8 +242,9 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
     QString LibraryString = ReadWhole.readAll();
     file.close();
 
-	LibraryString.replace(QRegExp("\\r\\n"), "\n");
-	
+    // BUG: this is certainly the wrong place..
+    LibraryString.replace(QRegExp("\\r\\n"), "\n");
+
     // The libraries have a header statement like the following:
     //
     // <Qucs Library 0.0.18 "libname">
@@ -332,3 +330,4 @@ inline int parseComponentLibrary (QString filename, ComponentLibrary &library)
 }
 
 #endif // _QUCSLIB_COMMON_H_
+// vim:ts=8:sw=2:noet
