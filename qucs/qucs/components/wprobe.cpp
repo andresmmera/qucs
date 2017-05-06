@@ -28,6 +28,11 @@ wProbe::wProbe()
 {
   Description = QObject::tr("power probe");
 
+  Props.append(new Property("Riv", "1e12 Ohm", false,
+  QObject::tr("ohmic resistance in Ohms")));
+  Props.append(new Property("Rii", "0 Ohm", false,
+  QObject::tr("ohmic resistance in Ohms")));
+
 //Large box
   Lines.append(new Line(-20,-33, 20,-33,QPen(Qt::darkBlue,2)));
   Lines.append(new Line(-20, 14, 20, 14,QPen(Qt::darkBlue,2)));

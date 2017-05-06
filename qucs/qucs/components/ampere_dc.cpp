@@ -42,6 +42,8 @@ Ampere_dc::Ampere_dc()
 
   Props.append(new Property("I", "1 mA", true,
 		QObject::tr("current in Ampere")));
+  Props.append(new Property("Ri", "1e12 Ohm", false, 
+		QObject::tr("ohmic resistance in Ohms")));
 
   rotate();  // fix historical flaw
 }
