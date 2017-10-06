@@ -30,7 +30,7 @@ SET(PNGS  fileopen.png filesave.png editdelete.png editcut.png editcopy.png
   ground.png textnew.png quit.png back.png forward.png home.png previous.png
   next.png #close_tab.png clearFilterText.png sub.png textbold.png textitalic.png
   #textleft.png textright.png super.png textcenter.png textjustify.png 
-  text.png
+  text.png tune.png RemoveElementTuning.png
   #textunder.png
 )
 
