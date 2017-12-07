@@ -170,62 +170,6 @@ void Graph::drawLines(int x0, int y0, ViewPainter *p) const
   }
 }
 // -------------------------------------------------------------
-//draws the vectors of phasor diagram
-void Graph::drawvect(int x0, int y0, ViewPainter *p) const
-{
-  float DX_, DY_;
-  double beta, phi;
-  QPolygon Points;
-  auto Painter = p->Painter;
-  QPen pen = Painter->pen();
-  auto Scale = p->Scale;
-
-  Painter->setPen(pen);
-  QPainterPath path;
-  auto pp = begin();
-  if(!pp->isPt())
-    pp++;
-
-  DX_ = p->DX + float(x0)*Scale;
-  DY_ = p->DY + float(y0)*Scale;
-  
-  float x1, y1,x2,y2,x3,y3,x4,y4;
-
-  while(!pp->isGraphEnd())
-  {
-    if(!pp->isBranchEnd())//draws the main line
-    {
-      x1=DX_ + pp->getScrX()*Scale;
-      y1=DY_ - (pp++)->getScrY()*Scale;
-      x2=DX_ + pp->getScrX()*Scale;
-      y2=DY_ - (pp++)->getScrY()*Scale;
-      Painter->drawLine(QLineF(x1, y1, x2, y2));
-    }
-    else
-    {
-      pp++;
-      continue;
-    }
-
-      phi = atan2(double(y2-y1), double(x2-x1));     
-      beta = atan2(double(4), double(10));
-      double alfa = beta+phi;
-      double Length = sqrt(4*4+10*10);
-      x3 = x2-int(Length*cos(alfa));
-      y3 = y2-int(Length*sin(alfa));
-      Painter->drawLine(QLineF(x3, y3, x2, y2));
-      pp++;
- 
-      alfa = phi-beta;
-      x4 = x2-int(Length*cos(alfa));
-      y4 = y2-int(Length*sin(alfa));
-      
-      Painter->drawLine(QLineF(x4, y4, x2, y2));
-
-  }
-
-}
-// -------------------------------------------------------------
 void Graph::drawStarSymbols(int x0i, int y0i, ViewPainter *p) const
 {
   float x3, x0, y0, x1, x2, y1, y2;

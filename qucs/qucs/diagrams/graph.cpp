@@ -94,26 +94,7 @@ void Graph::paintLines(ViewPainter *p, int x0, int y0)
       drawLines(x0, y0, p);
   }
 }
-// ---------------------------------------------------------------------
-/*paint function for phasor diagram*/
-void Graph::paintvect(ViewPainter *p, int x0, int y0)
-{
-    if(!ScrPoints.size())
-    return;
 
-  if(isSelected) {
-    p->Painter->setPen(QPen(Qt::darkGray,Thick*p->PrintScale+4));
-    drawvect(x0, y0, p);
-
-    p->Painter->setPen(QPen(Qt::white, Thick*p->PrintScale, Qt::SolidLine));
-    drawvect(x0, y0, p);
-    return;
-  }
-
-  // **** not selected ****
-  p->Painter->setPen(QPen(QColor(Color), Thick*p->PrintScale, Qt::SolidLine));
-  drawvect(x0, y0, p);
-}
 // ---------------------------------------------------------------------
 QString Graph::save()
 {
@@ -261,61 +242,6 @@ int Graph::getSelected(int x, int y)
   }
 
   return -1;
-}
-// -----------------------------------------------------------------------
-/*it's a select function for phasordiagram that with the 2 points of the vector 
-creates a linear equation and find if the point is in that equation*/
-
-int Graph::getSelectedP(int x, int y)
-{
-
-  float f1,f2,f3,f4;
-  float xn,yn;
-  float d1,b1;
-  auto pp = ScrPoints.begin();
-  if(pp == ScrPoints.end()) return -1;
-
-  if(pp->isStrokeEnd())
-    pp++;
-  while(!pp->isGraphEnd()) {
-    if(!pp->isBranchEnd())
-    {
-      f1 = pp->getScrX();
-      f2 = (pp++)->getScrY();
-      f3 = pp->getScrX();
-      f4 = (pp++)->getScrY();
-  
-      if((f1 > f3 - 5) && (f1 < f3 + 5))
-      {
-        xn = f1;
-        yn = y;
-      }
-      else  
-      {
-        if((f2 > f4 - 5) && (f2 < f4 + 5))
-        {
-          xn = x;
-          yn = f2;
-        }
-        else
-        { 
-          d1 = (f4 - f2) / (f3 - f1);
-          b1 = f4 - d1 * f3 ;
-          xn = (float(y) - b1) / d1;
-          yn = d1 * float(x) + b1;
-        }
-      }
-      if(((f1 >= f3) && (xn >= f3)  && (xn <= f1)) || ((f3 >= f1) && (xn >= f1)  && (xn <= f3)))
-        if(((f2 >= f4) && (yn >= f4) && (yn <= f2)) || ((f4 >= f2) && (yn >= f2) && (yn <= f4)))
-          if((y >= int(yn) - 5) && (y <= int(yn) + 5) && (x >= int(xn) - 5) && (x <= int(xn) + 5))
-            return 1;
-    }
-    else
-      pp++;
-  }
-
-  return -1;
-
 }
 // -----------------------------------------------------------------------
 // Creates a new graph and copies all the properties into it.
