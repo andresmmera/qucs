@@ -23,9 +23,19 @@
 #
 
 install:
+
+if COND_WIN32
+	RMDIR /S /Q qucs-test
+	git clone https://github.com/Qucs/qucs-test/
+	RMDIR /S /Q ${pkgdatadir}/examples
+	md ${pkgdatadir}/examples
+	move /Y qucs-test ${pkgdatadir}/examples
+	RMDIR /S /Q qucs-test
+else
 	rm -rf ./qucs-test	
 	git clone https://github.com/Qucs/qucs-test/
 	rm -rf ${pkgdatadir}/examples
 	mkdir ${pkgdatadir}/examples
 	mv -f ./qucs-test/testsuite/* ${pkgdatadir}/examples
 	rm -rf qucs-test
+endif
